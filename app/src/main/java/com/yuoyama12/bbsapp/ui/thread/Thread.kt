@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import com.yuoyama12.bbsapp.component.MessageInputBar
-import androidx.compose.material3.Icon as Icon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -19,7 +18,6 @@ fun Thread(
     threadTitle: String,
     onNavigationIconClicked: () -> Unit
 ) {
-
     Scaffold(
         topBar = {
             SmallTopAppBar(
@@ -37,7 +35,10 @@ fun Thread(
                             contentDescription = null
                         )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
             )
         }
     ) { padding ->
