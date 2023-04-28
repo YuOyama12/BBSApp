@@ -25,7 +25,7 @@ import com.yuoyama12.bbsapp.ui.theme.messageBackgroundColor
 import com.yuoyama12.bbsapp.ui.theme.userNameTextColor
 
 @Composable
-fun Message(
+fun MessageItem(
     modifier: Modifier = Modifier,
     userIcon: Painter,
     userName: String,
@@ -77,7 +77,7 @@ fun MessagePreview() {
         Surface(
             color = MaterialTheme.colorScheme.background
         ) {
-            Message(
+            MessageItem(
                 messageText = "",
                 userName = "anonymous",
                 userIcon = painterResource(R.drawable.ic_baseline_person_24)
