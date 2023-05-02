@@ -10,7 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
-import com.yuoyama12.bbsapp.component.MessageInputBar
+import com.yuoyama12.bbsapp.composable.MessageInputBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

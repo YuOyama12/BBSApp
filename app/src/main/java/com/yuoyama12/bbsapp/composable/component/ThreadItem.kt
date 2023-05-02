@@ -1,4 +1,4 @@
-package com.yuoyama12.bbsapp.component
+package com.yuoyama12.bbsapp.composable
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration

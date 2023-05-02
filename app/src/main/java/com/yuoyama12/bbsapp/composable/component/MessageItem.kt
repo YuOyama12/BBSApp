@@ -1,4 +1,4 @@
-package com.yuoyama12.bbsapp.component
+package com.yuoyama12.bbsapp.composable
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image

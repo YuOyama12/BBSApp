@@ -1,4 +1,4 @@
-package com.yuoyama12.bbsapp.component
+package com.yuoyama12.bbsapp.composable
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.*

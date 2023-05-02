@@ -13,7 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.yuoyama12.bbsapp.component.VisibleTopBarScaffold
+import com.yuoyama12.bbsapp.composable.VisibleTopBarScaffold
 import com.yuoyama12.bbsapp.ui.NavScreen
 import com.yuoyama12.bbsapp.ui.Screen
 import com.yuoyama12.bbsapp.ui.favorite.Favorite
