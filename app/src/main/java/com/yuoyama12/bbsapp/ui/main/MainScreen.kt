@@ -3,7 +3,6 @@ package com.yuoyama12.bbsapp.ui.main
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
@@ -13,7 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.yuoyama12.bbsapp.composable.VisibleTopBarScaffold
+import com.yuoyama12.bbsapp.composable.component.VisibleNavigationBarScaffold
 import com.yuoyama12.bbsapp.ui.NavScreen
 import com.yuoyama12.bbsapp.ui.Screen
 import com.yuoyama12.bbsapp.ui.favorite.Favorite
@@ -28,17 +27,10 @@ fun MainScreen() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    var isScreenFromNavigationBar by rememberSaveable { mutableStateOf(true) }
+    val showNavigationBar = navController.currentBackStackEntryAsState().value?.destination?.route in navigationItems.map { it.route }
 
-    LaunchedEffect(navBackStackEntry) {
-        isScreenFromNavigationBar = when(currentDestination?.route) {
-            Screen.Thread.route -> false
-            else -> true
-        }
-    }
-
-    VisibleTopBarScaffold(
-        isVisible = isScreenFromNavigationBar,
+    VisibleNavigationBarScaffold(
+        showNavigationBar = showNavigationBar,
         topBar = {
             NavigationBar {
                 navigationItems.forEach { screen ->
@@ -69,7 +61,9 @@ fun MainScreen() {
                 ThreadsList(
                     onItemClicked = {
                         if (backStackEntry.lifecycle.currentState == Lifecycle.State.RESUMED)
-                            navController.navigate(Screen.Thread.route)
+                            navController.navigate(Screen.Thread.route) {
+                                launchSingleTop = true
+                            }
                     }
                 )
             }

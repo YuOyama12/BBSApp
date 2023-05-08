@@ -1,4 +1,4 @@
-package com.yuoyama12.bbsapp.composable
+package com.yuoyama12.bbsapp.composable.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.*
@@ -7,13 +7,13 @@ import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun VisibleTopBarScaffold(
+fun VisibleNavigationBarScaffold(
     modifier: Modifier = Modifier,
-    isVisible: Boolean,
+    showNavigationBar: Boolean,
     topBar: @Composable () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit
 ) {
-    if (isVisible) {
+    if (showNavigationBar) {
         Scaffold(
             modifier = modifier,
             topBar = topBar,
