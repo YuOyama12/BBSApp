@@ -29,9 +29,7 @@ fun LoginScreen(
     )
 
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

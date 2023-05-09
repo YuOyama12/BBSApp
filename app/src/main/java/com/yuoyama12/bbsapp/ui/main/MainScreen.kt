@@ -60,7 +60,7 @@ fun MainScreen() {
             composable(NavScreen.ThreadsList.route) { backStackEntry ->
                 ThreadsList(
                     onItemClicked = {
-                        if (backStackEntry.lifecycle.currentState == Lifecycle.State.RESUMED)
+                        if (backStackEntry.getLifecycle().currentState == Lifecycle.State.RESUMED)
                             navController.navigate(Screen.Thread.route) {
                                 launchSingleTop = true
                             }
