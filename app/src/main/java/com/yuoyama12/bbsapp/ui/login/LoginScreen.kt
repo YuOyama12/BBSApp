@@ -22,7 +22,8 @@ import com.yuoyama12.bbsapp.ui.theme.BBSAppTheme
 
 @Composable
 fun LoginScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onLoginAsGuestClicked: () -> Unit
 ) {
     NormalTopAppBar(
         text = stringResource(R.string.login_screen_app_bar_title)
@@ -80,7 +81,7 @@ fun LoginScreen(
 
 
         TextButton(
-            onClick = {  },
+            onClick = { onLoginAsGuestClicked() },
             modifier = buttonModifier,
         ) {
             Text(
@@ -100,7 +101,9 @@ fun LoginScreenPreview() {
         Surface(
             color = MaterialTheme.colorScheme.background
         ) {
-            LoginScreen()
+            LoginScreen(
+                onLoginAsGuestClicked = {}
+            )
         }
     }
 }
