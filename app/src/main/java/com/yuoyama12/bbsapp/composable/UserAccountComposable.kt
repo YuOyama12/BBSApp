@@ -1,10 +1,12 @@
 package com.yuoyama12.bbsapp.composable
 
-import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -16,6 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.yuoyama12.bbsapp.R
 
 @Composable
@@ -46,6 +50,7 @@ fun PasswordField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChanged: (String) -> Unit,
+    placeholder: String
 ) {
     var isVisible by remember { mutableStateOf(false) }
 
@@ -60,7 +65,7 @@ fun PasswordField(
         modifier = modifier,
         value = value,
         onValueChange = { onValueChanged(it) },
-        placeholder = { Text(stringResource(R.string.password_placeholder)) },
+        placeholder = { Text(placeholder) },
         leadingIcon = {
             Icon(
                 Icons.Default.Lock,
@@ -79,4 +84,37 @@ fun PasswordField(
         visualTransformation = visualTransformation
     )
 }
+
+@Composable
+fun UserNameField(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChanged: (String) -> Unit
+) {
+    OutlinedTextField(
+        modifier = modifier,
+        value = value,
+        onValueChange = { onValueChanged(it) },
+        placeholder = {
+            Text(text = stringResource(R.string.user_name_placeholder))
+        },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Person,
+                contentDescription = null
+            )
+        },
+        singleLine = true
+    )
+}
+
+val userAccountFieldModifier =
+    Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp, vertical = 4.dp)
+val userAccountButtonModifier =
+    Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp, vertical = 8.dp)
+val userAccountButtonFontSize = 16.sp
 

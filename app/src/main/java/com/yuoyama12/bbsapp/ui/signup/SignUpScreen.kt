@@ -1,7 +1,9 @@
-package com.yuoyama12.bbsapp.ui.login
+package com.yuoyama12.bbsapp.ui.signup
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,13 +19,11 @@ import com.yuoyama12.bbsapp.composable.*
 import com.yuoyama12.bbsapp.ui.theme.BBSAppTheme
 
 @Composable
-fun LoginScreen(
-    modifier: Modifier = Modifier,
-    onLoginAsAnonymousClicked: () -> Unit,
-    onCreateAccountClicked: () -> Unit
+fun SignUpScreen(
+    modifier: Modifier = Modifier
 ) {
     NormalTopAppBar(
-        text = stringResource(R.string.login_screen_app_bar_title)
+        text = stringResource(R.string.sign_up_screen_app_bar_title)
     )
 
     Column(
@@ -33,6 +33,8 @@ fun LoginScreen(
     ) {
         var email by rememberSaveable { mutableStateOf("") }
         var password by rememberSaveable { mutableStateOf("") }
+        var repeatPassword by rememberSaveable { mutableStateOf("") }
+        var userName by rememberSaveable { mutableStateOf("") }
 
         EmailField(
             modifier = userAccountFieldModifier,
@@ -47,32 +49,25 @@ fun LoginScreen(
             placeholder = stringResource(R.string.password_placeholder)
         )
 
+        PasswordField(
+            modifier = userAccountFieldModifier,
+            value = repeatPassword,
+            onValueChanged = { repeatPassword = it },
+            placeholder = stringResource(R.string.repeat_password_placeholder)
+        )
+
+        UserNameField(
+            modifier = userAccountFieldModifier,
+            value = userName,
+            onValueChanged = { userName = it }
+        )
+
         Button(
             onClick = {  },
             modifier = userAccountButtonModifier,
         ) {
             Text(
-                text = stringResource(R.string.login_button),
-                fontSize = userAccountButtonFontSize
-            )
-        }
-
-        Button(
-            onClick = { onCreateAccountClicked() },
-            modifier = userAccountButtonModifier,
-        ) {
-            Text(
                 text = stringResource(R.string.sign_up_button),
-                fontSize = userAccountButtonFontSize
-            )
-        }
-
-        TextButton(
-            onClick = { onLoginAsAnonymousClicked() },
-            modifier = userAccountButtonModifier,
-        ) {
-            Text(
-                text = stringResource(R.string.login_as_guest_button),
                 fontSize = userAccountButtonFontSize
             )
         }
@@ -83,15 +78,12 @@ fun LoginScreen(
 @Composable
 @Preview(name = "normalMode", showBackground = true)
 @Preview(name = "darkMode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-fun LoginScreenPreview() {
+fun SignUpScreenPreview() {
     BBSAppTheme {
         Surface(
             color = MaterialTheme.colorScheme.background
         ) {
-            LoginScreen(
-                onLoginAsAnonymousClicked = {},
-                onCreateAccountClicked = {}
-            )
+            SignUpScreen()
         }
     }
 }

@@ -15,6 +15,7 @@ import com.yuoyama12.bbsapp.ui.login.LoginScreen
 import com.yuoyama12.bbsapp.ui.login.LoginViewModel
 import com.yuoyama12.bbsapp.ui.main.MainScreen
 import com.yuoyama12.bbsapp.ui.main.MainViewModel
+import com.yuoyama12.bbsapp.ui.signup.SignUpScreen
 import com.yuoyama12.bbsapp.ui.theme.BBSAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,13 +42,19 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.Main.route) { MainScreen() }
                     composable(Screen.Login.route) {
                         LoginScreen(
-                            onLoginAsGuestClicked = {
+                            onLoginAsAnonymousClicked = {
                                 mainViewModel.setIsFirstBoot(false)
                                 loginViewModel.loginAsAnonymous()
 
                                 navController.navigate(Screen.Main.route)
+                            },
+                            onCreateAccountClicked = {
+                                navController.navigate(Screen.SignUp.route)
                             }
                         )
+                    }
+                    composable(Screen.SignUp.route) {
+                        SignUpScreen()
                     }
                 }
 
