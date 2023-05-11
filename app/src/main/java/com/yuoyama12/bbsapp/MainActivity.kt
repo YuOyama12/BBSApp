@@ -10,9 +10,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.yuoyama12.bbsapp.ui.Screen
 import com.yuoyama12.bbsapp.ui.login.LoginScreen
 import com.yuoyama12.bbsapp.ui.login.LoginViewModel
@@ -24,11 +21,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val mainViewModel: MainViewModel by viewModels()
-    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        auth = Firebase.auth
 
         setContent {
             val loginViewModel: LoginViewModel = hiltViewModel()
@@ -36,7 +31,7 @@ class MainActivity : ComponentActivity() {
             BBSAppTheme {
                 val navController = rememberNavController()
                 val startDestination =
-                    if (loginViewModel.isNotLogin(auth) || mainViewModel.isFirstBoot) Screen.Login.route
+                    if (loginViewModel.isNotLogin() || mainViewModel.isFirstBoot) Screen.Login.route
                     else Screen.Main.route
 
                 NavHost(
@@ -48,7 +43,7 @@ class MainActivity : ComponentActivity() {
                         LoginScreen(
                             onLoginAsGuestClicked = {
                                 mainViewModel.setIsFirstBoot(false)
-                                loginViewModel.loginAsGuest(auth)
+                                loginViewModel.loginAsAnonymous()
 
                                 navController.navigate(Screen.Main.route)
                             }
