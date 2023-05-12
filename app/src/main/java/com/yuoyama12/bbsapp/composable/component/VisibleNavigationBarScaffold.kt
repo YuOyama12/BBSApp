@@ -7,16 +7,18 @@ import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun VisibleNavigationBarScaffold(
+fun VisibleAppBarScaffold(
     modifier: Modifier = Modifier,
-    showNavigationBar: Boolean,
+    showAppBar: Boolean,
     topBar: @Composable () -> Unit = {},
+    bottomBar: @Composable () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit
 ) {
-    if (showNavigationBar) {
+    if (showAppBar) {
         Scaffold(
             modifier = modifier,
             topBar = topBar,
+            bottomBar = bottomBar,
             content = content
         )
     } else {

@@ -12,4 +12,6 @@
     <string name="password_placeholder">パスワード</string>
     <string name="repeat_password_placeholder">パスワード（再入力）</string>
     <string name="user_name_placeholder">ユーザー名</string>
+    <string name="action_sign_up_title">アカウント作成</string>
+    <string name="action_settings_title">設定</string>
 </resources>
