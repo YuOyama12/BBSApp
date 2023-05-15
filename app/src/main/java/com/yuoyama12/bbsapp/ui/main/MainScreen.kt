@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -28,6 +29,9 @@ import com.yuoyama12.bbsapp.ui.threadslist.ThreadsList
 
 @Composable
 fun MainScreen() {
+    val viewModel: MainViewModel = hiltViewModel()
+    if (viewModel.isFirstBoot) { viewModel.setIsFirstBoot(false) }
+
     val navController = rememberNavController()
     val navigationItems = listOf(NavScreen.ThreadsList, NavScreen.Favorite)
 

@@ -10,8 +10,17 @@
     <string name="login_as_guest_button">ゲストとしてログイン</string>
     <string name="email_placeholder">メールアドレス</string>
     <string name="password_placeholder">パスワード</string>
-    <string name="repeat_password_placeholder">パスワード（再入力）</string>
+    <string name="repeated_password_placeholder">パスワード（再入力）</string>
     <string name="user_name_placeholder">ユーザー名</string>
     <string name="action_sign_up_title">アカウント作成</string>
     <string name="action_settings_title">設定</string>
+
+    <!-- Error messages -->
+    <string name="error_message_email">有効なメールアドレスではありません</string>
+    <string name="error_message_password">パスワードは6文字以上で設定してください</string>
+    <string name="error_message_repeated_password">パスワードが一致しません</string>
+    <string name="error_message_user_name">ユーザー名を入力してください</string>
+
+
+
 </resources>

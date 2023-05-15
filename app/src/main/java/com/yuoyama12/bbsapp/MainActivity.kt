@@ -54,7 +54,11 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable(Screen.SignUp.route) {
-                        SignUpScreen()
+                        SignUpScreen(
+                            moveToMainScreen = {
+                                navController.navigate(Screen.Main.route)
+                            }
+                        )
                     }
                 }
 
