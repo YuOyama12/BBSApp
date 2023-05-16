@@ -1,27 +1,31 @@
 package com.yuoyama12.bbsapp.ui.login
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.yuoyama12.bbsapp.R
+import com.yuoyama12.bbsapp.UserAccountInfoValidation
 import com.yuoyama12.bbsapp.composable.*
+import com.yuoyama12.bbsapp.data.UserAccount
 import com.yuoyama12.bbsapp.ui.theme.BBSAppTheme
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    onLoginAsAnonymousClicked: () -> Unit,
+    moveToMainScreen: () -> Unit,
     onCreateAccountClicked: () -> Unit
 ) {
+    val context = LocalContext.current
+    val viewModel: LoginViewModel = hiltViewModel()
+
     NormalTopAppBar(
         text = stringResource(R.string.login_screen_app_bar_title)
     )
@@ -31,24 +35,41 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var email by rememberSaveable { mutableStateOf("") }
-        var password by rememberSaveable { mutableStateOf("") }
+        val userAccount = remember { mutableStateOf(UserAccount()) }
 
         EmailField(
             modifier = userAccountFieldModifier,
-            value = email,
-            onValueChanged = { email = it }
+            value = userAccount.value.email,
+            onValueChanged = { userAccount.value = userAccount.value.copy(email = it) }
         )
 
         PasswordField(
             modifier = userAccountFieldModifier,
-            value = password,
-            onValueChanged = { password = it },
+            value = userAccount.value.password,
+            onValueChanged = { userAccount.value = userAccount.value.copy(password = it) },
             placeholder = stringResource(R.string.password_placeholder)
         )
 
         Button(
-            onClick = {  },
+            onClick = {
+                val accountInfoValidation = UserAccountInfoValidation(context)
+
+                if (accountInfoValidation.isInputtedInfoValidForLogin(userAccount.value)) {
+                    viewModel.login(
+                        userAccount = userAccount.value,
+                        onTaskCompleted = {
+                            Toast.makeText(
+                                context,
+                                R.string.login_completed_message,
+                                Toast.LENGTH_SHORT
+                                ).show()
+
+                            moveToMainScreen()
+                        },
+                        onTaskFailed = {  }
+                    )
+                }
+            },
             modifier = userAccountButtonModifier,
         ) {
             Text(
@@ -68,7 +89,12 @@ fun LoginScreen(
         }
 
         TextButton(
-            onClick = { onLoginAsAnonymousClicked() },
+            onClick = {
+                viewModel.loginAsAnonymous(
+                    onTaskCompleted = { moveToMainScreen() },
+                    onTaskFailed = {  }
+                )
+            },
             modifier = userAccountButtonModifier,
         ) {
             Text(
@@ -89,7 +115,7 @@ fun LoginScreenPreview() {
             color = MaterialTheme.colorScheme.background
         ) {
             LoginScreen(
-                onLoginAsAnonymousClicked = {},
+                moveToMainScreen = {},
                 onCreateAccountClicked = {}
             )
         }

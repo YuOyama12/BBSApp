@@ -6,6 +6,7 @@
     <string name="sign_up_screen_app_bar_title">アカウント情報登録</string>
     <string name="login_screen_app_bar_title">ログイン情報</string>
     <string name="login_button">ログイン</string>
+    <string name="login_completed_message">ログインに成功しました</string>
     <string name="sign_up_button">アカウント作成</string>
     <string name="login_as_guest_button">ゲストとしてログイン</string>
     <string name="email_placeholder">メールアドレス</string>

@@ -8,7 +8,7 @@ import com.yuoyama12.bbsapp.data.UserAccount
 
 private const val MIN_PASS_LENGTH = 6
 class UserAccountInfoValidation(private val context: Context) {
-    fun isInputtedInfoValid(userAccount: UserAccount): Boolean {
+    fun isInputtedInfoValidForSignUp(userAccount: UserAccount): Boolean {
         val email = userAccount.email
         val password = userAccount.password
         val repeatedPassword = userAccount.repeatedPassword
@@ -36,6 +36,24 @@ class UserAccountInfoValidation(private val context: Context) {
         }
         if (!isValidUserName(userName)) {
             showMessage(R.string.error_message_user_name)
+            return false
+        }
+
+        return true
+    }
+
+    fun isInputtedInfoValidForLogin(userAccount: UserAccount): Boolean {
+        val email = userAccount.email
+        val password = userAccount.password
+
+        if (email.isBlank() && password.isBlank()
+            || password.isBlank()
+        ) {
+            return false
+        }
+
+        if (!isValidEmail(email)) {
+            showMessage(R.string.error_message_email)
             return false
         }
 

@@ -42,22 +42,13 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.Main.route) { MainScreen() }
                     composable(Screen.Login.route) {
                         LoginScreen(
-                            onLoginAsAnonymousClicked = {
-                                mainViewModel.setIsFirstBoot(false)
-                                loginViewModel.loginAsAnonymous()
-
-                                navController.navigate(Screen.Main.route)
-                            },
-                            onCreateAccountClicked = {
-                                navController.navigate(Screen.SignUp.route)
-                            }
+                            moveToMainScreen = { navController.navigate(Screen.Main.route) },
+                            onCreateAccountClicked = { navController.navigate(Screen.SignUp.route) }
                         )
                     }
                     composable(Screen.SignUp.route) {
                         SignUpScreen(
-                            moveToMainScreen = {
-                                navController.navigate(Screen.Main.route)
-                            }
+                            moveToMainScreen = { navController.navigate(Screen.Main.route) }
                         )
                     }
                 }

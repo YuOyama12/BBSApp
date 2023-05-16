@@ -67,7 +67,7 @@ fun SignUpScreen(
             onClick = {
                 val accountInfoValidation = UserAccountInfoValidation(context)
 
-                if (accountInfoValidation.isInputtedInfoValid(userAccount.value)) {
+                if (accountInfoValidation.isInputtedInfoValidForSignUp(userAccount.value)) {
                     viewModel.createNewAccount(
                         userAccount = userAccount.value,
                         onTaskCompleted = { moveToMainScreen() },
