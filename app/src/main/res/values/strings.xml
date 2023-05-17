@@ -4,8 +4,10 @@
     <string name="favorite_navigation_label">お気に入り</string>
     <string name="add_favorite_message">お気に入りに追加しました</string>
     <string name="sign_up_screen_app_bar_title">アカウント情報登録</string>
+    <string name="sign_up_execute_message">アカウント作成中</string>
     <string name="login_screen_app_bar_title">ログイン情報</string>
     <string name="login_button">ログイン</string>
+    <string name="login_execute_message">ログイン処理中</string>
     <string name="login_completed_message">ログインに成功しました</string>
     <string name="sign_up_button">アカウント作成</string>
     <string name="login_as_guest_button">ゲストとしてログイン</string>

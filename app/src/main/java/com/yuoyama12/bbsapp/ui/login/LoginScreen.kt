@@ -14,6 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.yuoyama12.bbsapp.R
 import com.yuoyama12.bbsapp.UserAccountInfoValidation
 import com.yuoyama12.bbsapp.composable.*
+import com.yuoyama12.bbsapp.composable.component.OnExecutingIndicator
 import com.yuoyama12.bbsapp.data.UserAccount
 import com.yuoyama12.bbsapp.ui.theme.BBSAppTheme
 
@@ -25,6 +26,7 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
     val viewModel: LoginViewModel = hiltViewModel()
+    val onLoginExecuting by viewModel.onLoginExecuting.collectAsState(false)
 
     NormalTopAppBar(
         text = stringResource(R.string.login_screen_app_bar_title)
@@ -102,6 +104,10 @@ fun LoginScreen(
                 fontSize = userAccountButtonFontSize
             )
         }
+    }
+
+    if (onLoginExecuting) {
+        OnExecutingIndicator(text = stringResource(R.string.login_execute_message))
     }
 
 }
