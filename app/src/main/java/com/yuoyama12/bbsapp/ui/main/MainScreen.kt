@@ -31,6 +31,7 @@ import com.yuoyama12.bbsapp.ui.threadslist.ThreadsList
 
 @Composable
 fun MainScreen(
+    moveToSignUpScreen: () -> Unit,
     moveToLoginScreen: () -> Unit
 ) {
     val context = LocalContext.current
@@ -61,7 +62,7 @@ fun MainScreen(
                         onDismissRequest = { expandMenuOnAppBar = false },
                         onMenuItemClicked = { content ->
                             when (content) {
-                                ActionsInMoreVert.SignUp -> {  }
+                                ActionsInMoreVert.SignUp -> { moveToSignUpScreen() }
                                 ActionsInMoreVert.Logout -> {
                                     viewModel.logout()
 

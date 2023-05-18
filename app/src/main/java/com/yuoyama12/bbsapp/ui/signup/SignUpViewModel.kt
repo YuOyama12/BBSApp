@@ -1,6 +1,7 @@
 package com.yuoyama12.bbsapp.ui.signup
 
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.yuoyama12.bbsapp.data.UserAccount
@@ -25,6 +26,13 @@ class SignUpViewModel @Inject constructor(
         onTaskCompleted: () -> Unit,
         onTaskFailed: () -> Unit
     ) {
+        if (auth.currentUser != null) {
+            if (auth.currentUser!!.isAnonymous) {
+                linkAccount(userAccount, onTaskCompleted, onTaskFailed)
+                return
+            }
+        }
+
         val email = userAccount.email
         val password = userAccount.password
         val userName = userAccount.userName
@@ -34,6 +42,39 @@ class SignUpViewModel @Inject constructor(
             .addOnCompleteListener { firstTask ->
                 if (firstTask.isSuccessful) {
                     auth.signInWithEmailAndPassword(email, password)
+                    val userProfile = userProfileChangeRequest { displayName = userName }
+
+                    val user = auth.currentUser!!
+                    user.updateProfile(userProfile)
+                        .addOnCompleteListener { secondTask ->
+                            if (secondTask.isSuccessful) {
+                                setOnSignUpExecuting(false)
+                                onTaskCompleted()
+                            }
+                            else {
+                                setOnSignUpExecuting(false)
+                                onTaskFailed()
+                            }
+                        }
+                } else {
+                    setOnSignUpExecuting(false)
+                    onTaskFailed()
+                }
+            }
+    }
+
+    private fun linkAccount(
+        userAccount: UserAccount,
+        onTaskCompleted: () -> Unit,
+        onTaskFailed: () -> Unit
+    ) {
+        val credential = EmailAuthProvider.getCredential(userAccount.email, userAccount.password)
+        val userName = userAccount.userName
+
+        setOnSignUpExecuting(true)
+        auth.currentUser!!.linkWithCredential(credential)
+            .addOnCompleteListener { firstTask ->
+                if (firstTask.isSuccessful) {
                     val userProfile = userProfileChangeRequest { displayName = userName }
 
                     val user = auth.currentUser!!
