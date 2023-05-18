@@ -39,7 +39,11 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                     startDestination = startDestination
                 ) {
-                    composable(Screen.Main.route) { MainScreen() }
+                    composable(Screen.Main.route) {
+                        MainScreen(
+                            moveToLoginScreen = { navController.navigate(Screen.Login.route) }
+                        )
+                    }
                     composable(Screen.Login.route) {
                         LoginScreen(
                             moveToMainScreen = { navController.navigate(Screen.Main.route) },
@@ -63,6 +67,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     BBSAppTheme {
-        MainScreen()
+        MainScreen(
+            moveToLoginScreen = {  }
+        )
     }
 }

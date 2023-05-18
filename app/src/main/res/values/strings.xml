@@ -16,6 +16,8 @@
     <string name="repeated_password_placeholder">パスワード（再入力）</string>
     <string name="user_name_placeholder">ユーザー名</string>
     <string name="action_sign_up_title">アカウント作成</string>
+    <string name="action_logout_title">ログアウト</string>
+    <string name="logout_completed_message">ログアウトしました</string>
     <string name="action_settings_title">設定</string>
 
     <!-- Error messages -->

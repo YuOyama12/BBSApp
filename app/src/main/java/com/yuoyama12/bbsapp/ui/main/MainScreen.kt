@@ -1,5 +1,6 @@
 package com.yuoyama12.bbsapp.ui.main
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -7,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -19,7 +21,6 @@ import androidx.navigation.compose.rememberNavController
 import com.yuoyama12.bbsapp.R
 import com.yuoyama12.bbsapp.composable.NormalActionTopAppBar
 import com.yuoyama12.bbsapp.composable.SimplePopupMenu
-import com.yuoyama12.bbsapp.composable.component.OnExecutingIndicator
 import com.yuoyama12.bbsapp.composable.component.VisibleAppBarScaffold
 import com.yuoyama12.bbsapp.ui.NavScreen
 import com.yuoyama12.bbsapp.ui.Screen
@@ -29,7 +30,10 @@ import com.yuoyama12.bbsapp.ui.thread.Thread
 import com.yuoyama12.bbsapp.ui.threadslist.ThreadsList
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    moveToLoginScreen: () -> Unit
+) {
+    val context = LocalContext.current
     val viewModel: MainViewModel = hiltViewModel()
     if (viewModel.isFirstBoot) { viewModel.setIsFirstBoot(false) }
 
@@ -58,6 +62,17 @@ fun MainScreen() {
                         onMenuItemClicked = { content ->
                             when (content) {
                                 ActionsInMoreVert.SignUp -> {  }
+                                ActionsInMoreVert.Logout -> {
+                                    viewModel.logout()
+
+                                    Toast.makeText(
+                                        context,
+                                        R.string.logout_completed_message,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    moveToLoginScreen()
+                                }
                                 ActionsInMoreVert.Settings -> {  }
                             }
                         }
