@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun <E : Enum<*>> SimplePopupMenu(
     modifier: Modifier = Modifier,
-    menuItemContent: Array<E>,
+    menuItemContent: List<E>,
     menuItemTitles: List<String>,
     expanded: Boolean,
     onDismissRequest: () -> Unit,

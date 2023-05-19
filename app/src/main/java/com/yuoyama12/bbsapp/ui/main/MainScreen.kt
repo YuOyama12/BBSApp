@@ -55,15 +55,17 @@ fun MainScreen(
                 action = { expandMenuOnAppBar = !expandMenuOnAppBar },
                 actionIcon = Icons.Default.MoreVert,
                 popupMenu = {
+                    val actions = ActionsInMoreVert.getActionsByState(viewModel.isLoginAsAnonymous)
+
                     SimplePopupMenu(
-                        menuItemContent = ActionsInMoreVert.values(),
-                        menuItemTitles = ActionsInMoreVert.values().map { stringResource(it.titleResId) },
+                        menuItemContent = actions,
+                        menuItemTitles = actions.map { stringResource(it.titleResId) },
                         expanded = expandMenuOnAppBar,
                         onDismissRequest = { expandMenuOnAppBar = false },
                         onMenuItemClicked = { content ->
                             when (content) {
-                                ActionsInMoreVert.SignUp -> { moveToSignUpScreen() }
-                                ActionsInMoreVert.Logout -> {
+                                ActionsInMoreVert.Actions.SignUp -> { moveToSignUpScreen() }
+                                ActionsInMoreVert.Actions.Logout -> {
                                     viewModel.logout()
 
                                     Toast.makeText(
@@ -74,7 +76,7 @@ fun MainScreen(
 
                                     moveToLoginScreen()
                                 }
-                                ActionsInMoreVert.Settings -> {  }
+                                ActionsInMoreVert.Actions.Settings -> {  }
                             }
                         }
                     )

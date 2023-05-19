@@ -15,6 +15,7 @@ class MainViewModel @Inject constructor(
     private val auth: FirebaseAuth
 ): ViewModel() {
     val isFirstBoot = runBlocking { dataStoreManager.getIsFirstBoot() }
+    val isLoginAsAnonymous = auth.currentUser!!.isAnonymous
 
     fun setIsFirstBoot(isFirstBoot: Boolean) {
         viewModelScope.launch {
