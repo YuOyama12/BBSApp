@@ -14,7 +14,7 @@ import com.yuoyama12.bbsapp.composable.MessageInputBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Thread(
+fun ThreadScreen(
     threadTitle: String,
     onNavigationIconClicked: () -> Unit
 ) {

@@ -25,8 +25,8 @@ import com.yuoyama12.bbsapp.composable.component.VisibleAppBarScaffold
 import com.yuoyama12.bbsapp.ui.NavScreen
 import com.yuoyama12.bbsapp.ui.Screen
 import com.yuoyama12.bbsapp.ui.actions.ActionsInMoreVert
-import com.yuoyama12.bbsapp.ui.favorite.Favorite
-import com.yuoyama12.bbsapp.ui.thread.Thread
+import com.yuoyama12.bbsapp.ui.favorite.FavoriteScreen
+import com.yuoyama12.bbsapp.ui.thread.ThreadScreen
 import com.yuoyama12.bbsapp.ui.threadslist.ThreadsList
 
 @Composable
@@ -119,10 +119,10 @@ fun MainScreen(
                     }
                 )
             }
-            composable(NavScreen.Favorite.route) { Favorite() }
+            composable(NavScreen.Favorite.route) { FavoriteScreen() }
 
             composable(Screen.Thread.route) {
-                Thread(
+                ThreadScreen(
                     threadTitle = "test",
                     onNavigationIconClicked = { navController.popBackStack() }
                 )
