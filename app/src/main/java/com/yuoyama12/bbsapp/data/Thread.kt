@@ -4,7 +4,6 @@ data class Thread(
     val threadId: String = "",
     val uId: String = "",
     val title: String = "",
-    val postedDate: String = "",
-    val modifiedDate: String = "",
-    val messages : List<Message> = listOf()
+    val createdDate: String = "",
+    val modifiedDate: String = ""
 )

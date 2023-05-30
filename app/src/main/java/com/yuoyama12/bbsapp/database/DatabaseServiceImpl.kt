@@ -1,25 +1,71 @@
 package com.yuoyama12.bbsapp.database
 
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.yuoyama12.bbsapp.data.Message
 import com.yuoyama12.bbsapp.data.Thread
+import kotlinx.coroutines.flow.MutableStateFlow
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
+import javax.inject.Singleton
 
 private const val THREAD = "threads"
 private const val MESSAGE = "messages"
+@Singleton
 class DatabaseServiceImpl @Inject constructor(
     database: FirebaseDatabase
 ) : DatabaseService{
-    private val reference = database.reference
+    override val threads = MutableStateFlow(SnapshotStateList<Thread>())
+
+    private val threadRef = database.reference.child(THREAD)
+    private val messageRef = database.reference.child(MESSAGE)
+
+    init {
+        threadRef.addValueEventListener(
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    threads.value.clear()
+
+                    for (child in snapshot.children) {
+                        val dataSnapshot = child.getValue(Thread::class.java)
+                        if (dataSnapshot != null) {
+                            threads.value.add(dataSnapshot)
+                        }
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            }
+        )
+    }
+
+    private fun getCurrentTime(): String {
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")
+        return current.format(formatter)
+    }
 
     override suspend fun writeNewThread(thread: Thread) {
-        val key = reference.child(THREAD).push().key ?: return
-        reference.child(THREAD).child(key).setValue(thread)
+        val key = threadRef.push().key ?: return
+        val currentTime = getCurrentTime()
+        val threadWithIdAndTime =
+            thread.copy(
+                threadId = key,
+                createdDate = currentTime,
+                modifiedDate = currentTime,
+            )
+
+        threadRef.child(key).setValue(threadWithIdAndTime)
     }
 
     override suspend fun writeNewMessage(message: Message) {
-        val key = reference.child(MESSAGE).push().key ?: return
-        reference.child(MESSAGE).child(key).setValue(message)
+        val key = messageRef.push().key ?: return
+        messageRef.child(key).setValue(message)
     }
 
 }

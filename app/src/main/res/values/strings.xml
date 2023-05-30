@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">BBSApp</string>
+    <string name="dialog_cancel">キャンセル</string>
     <string name="threads_list_navigation_label">スレッド一覧</string>
+    <string name="create_new_thread_button">スレッド新規作成</string>
+    <string name="dialog_create_new_thread_title">スレッド新規作成</string>
+    <string name="dialog_create_new_thread_text_placeholder">タイトル</string>
+    <string name="dialog_create_new_thread_text_positive">作成</string>
     <string name="favorite_navigation_label">お気に入り</string>
     <string name="add_favorite_message">お気に入りに追加しました</string>
     <string name="sign_up_screen_app_bar_title">アカウント情報登録</string>
