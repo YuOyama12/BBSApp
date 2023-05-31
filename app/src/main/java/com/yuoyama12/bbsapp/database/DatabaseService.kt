@@ -10,4 +10,5 @@ interface DatabaseService {
 
     suspend fun writeNewThread(thread: Thread)
     suspend fun writeNewMessage(message: Message)
+    suspend fun getThreadFrom(threadId: String): Thread?
 }

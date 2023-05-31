@@ -14,11 +14,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.yuoyama12.bbsapp.R
+import com.yuoyama12.bbsapp.DEFAULT_THREAD_ID
+import com.yuoyama12.bbsapp.THREAD_ID
 import com.yuoyama12.bbsapp.composable.NormalActionTopAppBar
 import com.yuoyama12.bbsapp.composable.SimplePopupMenu
 import com.yuoyama12.bbsapp.composable.component.VisibleAppBarScaffold
@@ -27,7 +31,7 @@ import com.yuoyama12.bbsapp.ui.Screen
 import com.yuoyama12.bbsapp.ui.actions.ActionsInMoreVert
 import com.yuoyama12.bbsapp.ui.favorite.FavoriteScreen
 import com.yuoyama12.bbsapp.ui.thread.ThreadScreen
-import com.yuoyama12.bbsapp.ui.threadslist.ThreadsList
+import com.yuoyama12.bbsapp.ui.threadslist.ThreadsListScreen
 
 @Composable
 fun MainScreen(
@@ -110,10 +114,10 @@ fun MainScreen(
             modifier = Modifier.padding(padding)
         ) {
             composable(NavScreen.ThreadsList.route) { backStackEntry ->
-                ThreadsList(
-                    onItemClicked = {
+                ThreadsListScreen(
+                    onItemClicked = { threadId ->
                         if (backStackEntry.lifecycle.currentState == Lifecycle.State.RESUMED)
-                            navController.navigate(Screen.Thread.route) {
+                            navController.navigate(Screen.Thread.createRouteWithThreadId(threadId)) {
                                 launchSingleTop = true
                             }
                     }
@@ -121,9 +125,14 @@ fun MainScreen(
             }
             composable(NavScreen.Favorite.route) { FavoriteScreen() }
 
-            composable(Screen.Thread.route) {
+            composable(
+                route = "${Screen.Thread.route}/{$THREAD_ID}",
+                arguments = listOf(navArgument(THREAD_ID) { type = NavType.StringType })
+            ) { backStackEntry ->
+                val threadId = backStackEntry.arguments?.getString(THREAD_ID) ?: DEFAULT_THREAD_ID
+
                 ThreadScreen(
-                    threadTitle = "test",
+                    threadId = threadId,
                     onNavigationIconClicked = { navController.popBackStack() }
                 )
             }

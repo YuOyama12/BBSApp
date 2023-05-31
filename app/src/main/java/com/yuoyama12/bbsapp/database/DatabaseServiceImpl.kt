@@ -8,6 +8,7 @@ import com.google.firebase.database.ValueEventListener
 import com.yuoyama12.bbsapp.data.Message
 import com.yuoyama12.bbsapp.data.Thread
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.tasks.await
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -68,4 +69,6 @@ class DatabaseServiceImpl @Inject constructor(
         messageRef.child(key).setValue(message)
     }
 
+    override suspend fun getThreadFrom(threadId: String): Thread? =
+        threadRef.child(threadId).get().await().getValue(Thread::class.java)
 }

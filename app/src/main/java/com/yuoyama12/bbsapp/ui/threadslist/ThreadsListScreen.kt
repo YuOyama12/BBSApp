@@ -21,8 +21,8 @@ import com.yuoyama12.bbsapp.R
 import com.yuoyama12.bbsapp.composable.SimpleInputDialog
 
 @Composable
-fun ThreadsList(
-    onItemClicked: () -> Unit
+fun ThreadsListScreen(
+    onItemClicked: (threadId: String) -> Unit
 ) {
     val viewModel: ThreadsListViewModel = hiltViewModel()
     var openCreateNewThreadDialog by remember { mutableStateOf(false) }
@@ -51,7 +51,7 @@ fun ThreadsList(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { onItemClicked() }
+                        .clickable { onItemClicked(thread.threadId) }
                 ) {
                     Text(
                         text = thread.title,
