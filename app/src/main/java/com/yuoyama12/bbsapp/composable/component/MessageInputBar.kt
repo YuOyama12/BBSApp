@@ -1,4 +1,4 @@
-package com.yuoyama12.bbsapp.composable
+package com.yuoyama12.bbsapp.composable.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -16,12 +16,12 @@ fun MessageInputBar(
     modifier: Modifier = Modifier,
     onSubmitClicked: (String) -> Unit
 ) {
-    var message by remember { mutableStateOf("") }
+    var messageBody by remember { mutableStateOf("") }
 
     Row(modifier = modifier.height(intrinsicSize = IntrinsicSize.Min)) {
         OutlinedTextField(
-            value = message,
-            onValueChange = { message = it },
+            value = messageBody,
+            onValueChange = { messageBody = it },
             modifier = Modifier
                 .heightIn(max = 120.dp)
                 .weight(0.85f)
@@ -36,9 +36,10 @@ fun MessageInputBar(
         ) {
             IconButton(
                 onClick = {
-                    if (message.trim().isNotEmpty()) {
-                        onSubmitClicked(message)
+                    if (messageBody.trim().isNotEmpty()) {
+                        onSubmitClicked(messageBody)
                     }
+                    messageBody = ""
                 },
                 modifier = Modifier.padding(vertical = 2.dp)
             ) {

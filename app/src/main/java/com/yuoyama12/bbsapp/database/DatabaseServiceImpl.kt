@@ -66,7 +66,11 @@ class DatabaseServiceImpl @Inject constructor(
 
     override suspend fun writeNewMessage(message: Message) {
         val key = messageRef.push().key ?: return
-        messageRef.child(key).setValue(message)
+        val currentTime = getCurrentTime()
+        val messageWithTime =
+            message.copy(postedDate = currentTime)
+
+        messageRef.child(message.threadId).child(key).setValue(messageWithTime)
     }
 
     override suspend fun getThreadFrom(threadId: String): Thread? =

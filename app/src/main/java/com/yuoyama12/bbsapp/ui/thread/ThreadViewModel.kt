@@ -2,7 +2,9 @@ package com.yuoyama12.bbsapp.ui.thread
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.yuoyama12.bbsapp.DEFAULT_THREAD_ID
+import com.yuoyama12.bbsapp.data.Message
 import com.yuoyama12.bbsapp.database.DatabaseService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -13,6 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
 class ThreadViewModel @Inject constructor(
+    private val auth: FirebaseAuth,
     private val database: DatabaseService
 ) : ViewModel() {
     private val _thread = MutableStateFlow(Thread())
@@ -23,6 +26,19 @@ class ThreadViewModel @Inject constructor(
             viewModelScope.launch {
                 _thread.value = database.getThreadFrom(threadId) ?: Thread()
             }
+        }
+    }
+
+    fun postNewMessage(messageBody: String, threadId: String) {
+        val message =
+            Message(
+                threadId = threadId,
+                uId = auth.currentUser!!.uid,
+                body = messageBody
+            )
+
+        viewModelScope.launch {
+            database.writeNewMessage(message)
         }
     }
 
