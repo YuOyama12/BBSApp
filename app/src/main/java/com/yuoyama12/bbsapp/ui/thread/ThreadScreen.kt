@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -18,7 +19,6 @@ import com.yuoyama12.bbsapp.composable.Keyboard
 import com.yuoyama12.bbsapp.composable.component.MessageInputBar
 import com.yuoyama12.bbsapp.composable.component.MessageItem
 import com.yuoyama12.bbsapp.composable.keyboardAsState
-import com.yuoyama12.bbsapp.data.Message
 import kotlinx.coroutines.launch
 
 private const val DEFAULT_LIST_INDEX = -1
@@ -30,7 +30,6 @@ fun ThreadScreen(
 ) {
     val viewModel: ThreadViewModel = hiltViewModel()
     val thread = viewModel.thread.collectAsState()
-    val messages by remember { mutableStateOf(listOf<Message>()) }
 
     val composableScope = rememberCoroutineScope()
     val keyboardState by keyboardAsState()
@@ -39,6 +38,12 @@ fun ThreadScreen(
 
     LaunchedEffect(Unit) {
         viewModel.initialize(threadId)
+    }
+
+    DisposableEffect(LocalLifecycleOwner.current) {
+        this.onDispose {
+            viewModel.onDispose(threadId)
+        }
     }
 
     LaunchedEffect(listState.firstVisibleItemIndex) {
@@ -93,11 +98,12 @@ fun ThreadScreen(
                 modifier = Modifier.weight(1f),
                 state = listState
             ) {
-                items(messages) { message ->
+                items(viewModel.messages.value) { message ->
                     MessageItem(
                         userIcon = painterResource(R.drawable.ic_baseline_person_24),
-                        userName = message.uId,
-                        messageText = message.body)
+                        userName = message.userName,
+                        messageText = message.body
+                    )
                 }
             }
 

@@ -19,7 +19,7 @@ class ThreadsListViewModel @Inject constructor(
 
     fun getThreadWithUserId(title: String): Thread {
         return Thread(
-            uId = auth.currentUser!!.uid,
+            userId = auth.currentUser!!.uid,
             title = title
         )
     }

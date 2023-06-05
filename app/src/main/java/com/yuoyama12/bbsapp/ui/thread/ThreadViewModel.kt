@@ -21,24 +21,43 @@ class ThreadViewModel @Inject constructor(
     private val _thread = MutableStateFlow(Thread())
     val thread = _thread.asStateFlow()
 
+    val messages = database.messages.asStateFlow()
+
     fun initialize(threadId: String) {
         if (threadId != DEFAULT_THREAD_ID) {
             viewModelScope.launch {
                 _thread.value = database.getThreadFrom(threadId) ?: Thread()
+                database.setListenerOnMessageRef(threadId)
             }
         }
     }
 
     fun postNewMessage(messageBody: String, threadId: String) {
+        val userName =
+            if (auth.currentUser!!.isAnonymous) {
+                "anonymous(${auth.currentUser!!.uid.substring(range = 0..6)})"
+            } else {
+                auth.currentUser!!.displayName
+            }
+
         val message =
             Message(
                 threadId = threadId,
-                uId = auth.currentUser!!.uid,
+                userId = auth.currentUser!!.uid,
+                userName = userName!!,
                 body = messageBody
             )
 
         viewModelScope.launch {
             database.writeNewMessage(message)
+        }
+    }
+
+    fun onDispose(threadId: String) {
+        viewModelScope.launch {
+            database.removeListenerOnMessageRef(threadId)
+            _thread.value = Thread()
+            database.messages.value.clear()
         }
     }
 

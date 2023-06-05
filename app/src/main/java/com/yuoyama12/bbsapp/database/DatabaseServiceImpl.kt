@@ -21,9 +21,27 @@ class DatabaseServiceImpl @Inject constructor(
     database: FirebaseDatabase
 ) : DatabaseService{
     override val threads = MutableStateFlow(SnapshotStateList<Thread>())
+    override val messages = MutableStateFlow(SnapshotStateList<Message>())
 
     private val threadRef = database.reference.child(THREAD)
     private val messageRef = database.reference.child(MESSAGE)
+
+    private val eventListenerForMessageRef =
+        object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                messages.value.clear()
+
+                for (child in snapshot.children) {
+                    val dataSnapshot = child.getValue(Message::class.java)
+                    if (dataSnapshot != null) {
+                        messages.value.add(dataSnapshot)
+                    }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        }
 
     init {
         threadRef.addValueEventListener(
@@ -49,6 +67,14 @@ class DatabaseServiceImpl @Inject constructor(
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")
         return current.format(formatter)
+    }
+
+    override fun setListenerOnMessageRef(threadId: String) {
+        messageRef.child(threadId).addValueEventListener(eventListenerForMessageRef)
+    }
+
+    override fun removeListenerOnMessageRef(threadId: String) {
+        messageRef.child(threadId).removeEventListener(eventListenerForMessageRef)
     }
 
     override suspend fun writeNewThread(thread: Thread) {
