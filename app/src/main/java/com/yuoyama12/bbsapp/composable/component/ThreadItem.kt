@@ -24,35 +24,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yuoyama12.bbsapp.R
 import com.yuoyama12.bbsapp.ui.theme.BBSAppTheme
-import java.text.SimpleDateFormat
+import com.yuoyama12.bbsapp.data.Thread
 import java.util.*
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun ThreadItem(
     modifier: Modifier = Modifier,
-    title: String,
-    latestMessage: String,
-    updatedDate: String,
-    isInFavorite: Boolean
+    thread: Thread
 ) {
     val context = LocalContext.current
     val messageWhenAddToFavorite = stringResource(R.string.add_favorite_message)
 
-    var favorite by remember { mutableStateOf(isInFavorite) }
+    var favorite by remember { mutableStateOf(false) }
     
     if (favorite) MaterialTheme.colorScheme.primary
     else LocalContentColor.current
 
     Box(modifier = modifier) {
-        Column(modifier = modifier.padding(12.dp)) {
+        Column(modifier = modifier.padding(8.dp)) {
             Row(
                 modifier = Modifier
                     .height(IntrinsicSize.Min)
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = title,
+                    text = thread.title,
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .weight(0.9f),
@@ -65,7 +62,10 @@ fun ThreadItem(
 
                 IconButton(
                     onClick = {
-                        Toast.makeText(context, messageWhenAddToFavorite, Toast.LENGTH_SHORT).show()
+                        if (!favorite) {
+                            Toast.makeText(context, messageWhenAddToFavorite, Toast.LENGTH_SHORT).show()
+                        }
+
                         favorite = !favorite
                     },
                     modifier = Modifier
@@ -101,30 +101,28 @@ fun ThreadItem(
                     .padding(top = 3.dp)
             ) {
                 val textColor = Color.Gray
-                val textSize = 10.sp
 
                 Text(
-                    text = latestMessage,
+                    text = thread.latestMessageBody,
                     modifier = Modifier
-                        .weight(0.85f)
-                        .padding(horizontal = 6.dp, vertical = 4.dp),
+                        .weight(0.6f)
+                        .padding(horizontal = 6.dp),
                     color = textColor,
-                    fontSize = textSize,
+                    fontSize = 14.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
 
                 Text(
-                    text = updatedDate,
-                    modifier = Modifier.weight(0.15f),
+                    text = thread.modifiedDate,
+                    modifier = Modifier.weight(0.4f),
                     color = textColor,
-                    fontSize = textSize,
+                    fontSize = 12.sp,
                     textAlign = TextAlign.End
                 )
             }
         }
     }
-
 }
 
 @SuppressLint("SimpleDateFormat")
@@ -136,12 +134,9 @@ fun ThreadPreview() {
         Surface(
             color = MaterialTheme.colorScheme.background
         ) {
-            val updatedDate = SimpleDateFormat("MM/dd")
+            val thread = Thread()
             ThreadItem(
-                title = "hogehogehoge",
-                latestMessage = "hogehogehoge",
-                updatedDate = updatedDate.format(Calendar.getInstance().time),
-                isInFavorite = false
+                thread = thread
             )
         }
     }

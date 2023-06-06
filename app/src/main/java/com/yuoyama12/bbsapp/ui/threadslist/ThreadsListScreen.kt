@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.yuoyama12.bbsapp.R
 import com.yuoyama12.bbsapp.composable.SimpleInputDialog
+import com.yuoyama12.bbsapp.composable.component.ThreadItem
 
 @Composable
 fun ThreadsListScreen(
@@ -53,10 +54,8 @@ fun ThreadsListScreen(
                         .fillMaxWidth()
                         .clickable { onItemClicked(thread.threadId) }
                 ) {
-                    Text(
-                        text = thread.title,
-                        modifier = Modifier.padding(16.dp)
-                    )
+                    ThreadItem(thread = thread)
+                    Divider(thickness = 0.1.dp)
                 }
             }
         }

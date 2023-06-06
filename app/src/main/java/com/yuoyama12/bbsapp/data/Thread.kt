@@ -5,5 +5,6 @@ data class Thread(
     val userId: String = "",
     val title: String = "",
     val createdDate: String = "",
-    val modifiedDate: String = ""
+    val modifiedDate: String = "",
+    val latestMessageBody: String = "",
 )

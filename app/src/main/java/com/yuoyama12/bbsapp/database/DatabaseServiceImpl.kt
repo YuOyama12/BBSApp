@@ -96,7 +96,16 @@ class DatabaseServiceImpl @Inject constructor(
         val messageWithTime =
             message.copy(postedDate = currentTime)
 
+        updateThread(messageWithTime.body, messageWithTime.threadId)
         messageRef.child(message.threadId).child(key).setValue(messageWithTime)
+    }
+
+    private fun updateThread(messageBody: String, threadId: String) {
+        val threadUpdate = mutableMapOf<String, Any>()
+        threadUpdate["latestMessageBody"] = messageBody
+        threadUpdate["modifiedDate"] = getCurrentTime()
+
+        threadRef.child(threadId).updateChildren(threadUpdate)
     }
 
     override suspend fun getThreadFrom(threadId: String): Thread? =
