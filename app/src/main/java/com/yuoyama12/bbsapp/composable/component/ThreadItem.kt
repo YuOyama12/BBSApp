@@ -31,12 +31,14 @@ import java.util.*
 @Composable
 fun ThreadItem(
     modifier: Modifier = Modifier,
-    thread: Thread
+    thread: Thread,
+    isFavorite: Boolean,
+    onFavoriteClicked: (threadId: String, favorite: Boolean) -> Unit
 ) {
     val context = LocalContext.current
     val messageWhenAddToFavorite = stringResource(R.string.add_favorite_message)
 
-    var favorite by remember { mutableStateOf(false) }
+    var favorite by remember { mutableStateOf(isFavorite) }
     
     if (favorite) MaterialTheme.colorScheme.primary
     else LocalContentColor.current
@@ -67,6 +69,7 @@ fun ThreadItem(
                         }
 
                         favorite = !favorite
+                        onFavoriteClicked(thread.threadId, favorite)
                     },
                     modifier = Modifier
                         .align(Alignment.Top)
@@ -136,7 +139,9 @@ fun ThreadPreview() {
         ) {
             val thread = Thread()
             ThreadItem(
-                thread = thread
+                thread = thread,
+                isFavorite = true,
+                onFavoriteClicked = { _, _ -> }
             )
         }
     }

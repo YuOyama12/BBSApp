@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,7 +27,19 @@ fun ThreadsListScreen(
     onItemClicked: (threadId: String) -> Unit
 ) {
     val viewModel: ThreadsListViewModel = hiltViewModel()
+    val favorites = viewModel.favorites.collectAsState()
+
     var openCreateNewThreadDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        viewModel.loadFavoritesList()
+    }
+
+    DisposableEffect(LocalLifecycleOwner.current) {
+        this.onDispose {
+            viewModel.loadFavoritesList()
+        }
+    }
 
     Column {
         Box(modifier = Modifier.shadow(elevation = 12.dp)) {
@@ -54,7 +67,13 @@ fun ThreadsListScreen(
                         .fillMaxWidth()
                         .clickable { onItemClicked(thread.threadId) }
                 ) {
-                    ThreadItem(thread = thread)
+                    ThreadItem(
+                        thread = thread,
+                        isFavorite = favorites.value.contains(thread.threadId)
+                    ) { threadId, favorite ->
+                        if (favorite) { viewModel.addThreadIdToFavorites(threadId) }
+                        else { viewModel.removeThreadIdFromFavorites(threadId) }
+                    }
                     Divider(thickness = 0.1.dp)
                 }
             }
