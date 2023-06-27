@@ -57,7 +57,7 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    private suspend fun getFavorites(): MutableList<String> {
+    suspend fun getFavorites(): MutableList<String> {
         val jsonData = context.dataStore.data.map { preferences ->
             preferences[FAVORITES] ?: ""
         }.first()

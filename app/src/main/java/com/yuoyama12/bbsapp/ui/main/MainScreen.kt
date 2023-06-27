@@ -123,7 +123,16 @@ fun MainScreen(
                     }
                 )
             }
-            composable(NavScreen.Favorite.route) { FavoriteScreen() }
+            composable(NavScreen.Favorite.route) { backStackEntry ->
+                FavoriteScreen(
+                    onItemClicked = { threadId ->
+                        if (backStackEntry.lifecycle.currentState == Lifecycle.State.RESUMED)
+                            navController.navigate(Screen.Thread.createRouteWithThreadId(threadId)) {
+                                launchSingleTop = true
+                            }
+                    }
+                )
+            }
 
             composable(
                 route = "${Screen.Thread.route}/{$THREAD_ID}",

@@ -33,7 +33,8 @@ fun ThreadItem(
     modifier: Modifier = Modifier,
     thread: Thread,
     isFavorite: Boolean,
-    onFavoriteClicked: (threadId: String, favorite: Boolean) -> Unit
+    showFavoriteIcon: Boolean = true,
+    onFavoriteClicked: (threadId: String, favorite: Boolean) -> Unit = { _, _ -> }
 ) {
     val context = LocalContext.current
     val messageWhenAddToFavorite = stringResource(R.string.add_favorite_message)
@@ -62,36 +63,38 @@ fun ThreadItem(
                     overflow = TextOverflow.Ellipsis
                 )
 
-                IconButton(
-                    onClick = {
-                        if (!favorite) {
-                            Toast.makeText(context, messageWhenAddToFavorite, Toast.LENGTH_SHORT).show()
-                        }
-
-                        favorite = !favorite
-                        onFavoriteClicked(thread.threadId, favorite)
-                    },
-                    modifier = Modifier
-                        .align(Alignment.Top)
-                        .weight(0.1f)
-                ) {
-                    AnimatedContent(
-                        targetState = favorite,
-                        transitionSpec = { scaleIn(initialScale = 0.4f) with scaleOut(targetScale = 0.4f) }
-                    ) {
-                        when (it) {
-                            true -> {
-                                Icon(
-                                    imageVector = Icons.Outlined.Favorite,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.primary,
-                                )
+                if (showFavoriteIcon) {
+                    IconButton(
+                        onClick = {
+                            if (!favorite) {
+                                Toast.makeText(context, messageWhenAddToFavorite, Toast.LENGTH_SHORT).show()
                             }
-                            false -> {
-                                Icon(
-                                    imageVector = Icons.Outlined.FavoriteBorder,
-                                    contentDescription = null
-                                )
+
+                            favorite = !favorite
+                            onFavoriteClicked(thread.threadId, favorite)
+                        },
+                        modifier = Modifier
+                            .align(Alignment.Top)
+                            .weight(0.1f)
+                    ) {
+                        AnimatedContent(
+                            targetState = favorite,
+                            transitionSpec = { scaleIn(initialScale = 0.4f) with scaleOut(targetScale = 0.4f) }
+                        ) {
+                            when (it) {
+                                true -> {
+                                    Icon(
+                                        imageVector = Icons.Outlined.Favorite,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.primary,
+                                    )
+                                }
+                                false -> {
+                                    Icon(
+                                        imageVector = Icons.Outlined.FavoriteBorder,
+                                        contentDescription = null
+                                    )
+                                }
                             }
                         }
                     }
