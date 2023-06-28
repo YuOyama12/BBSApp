@@ -23,6 +23,8 @@ class ThreadViewModel @Inject constructor(
 
     val messages = database.messages.asStateFlow()
 
+    val user = auth.currentUser!!
+
     fun initialize(threadId: String) {
         if (threadId != DEFAULT_THREAD_ID) {
             viewModelScope.launch {

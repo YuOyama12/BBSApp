@@ -1,6 +1,7 @@
 package com.yuoyama12.bbsapp.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
@@ -18,6 +19,9 @@ fun userNameTextColor(): Color =
         else Color.DarkGray
 
 @Composable
-fun messageBackgroundColor(): Color =
+fun messageBoxColor(): Color =
     if (isSystemInDarkTheme()) Color.DarkGray
         else Color.LightGray
+
+@Composable
+fun selfMessageBoxColor(): Color = MaterialTheme.colorScheme.primaryContainer

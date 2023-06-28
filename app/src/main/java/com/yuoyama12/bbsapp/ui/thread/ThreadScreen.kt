@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.yuoyama12.bbsapp.R
 import com.yuoyama12.bbsapp.composable.Keyboard
+import com.yuoyama12.bbsapp.composable.component.FLipHorizontalMessageItem
 import com.yuoyama12.bbsapp.composable.component.MessageInputBar
 import com.yuoyama12.bbsapp.composable.component.MessageItem
 import com.yuoyama12.bbsapp.composable.keyboardAsState
@@ -29,6 +30,7 @@ fun ThreadScreen(
     onNavigationIconClicked: () -> Unit
 ) {
     val viewModel: ThreadViewModel = hiltViewModel()
+    val user = viewModel.user
     val thread = viewModel.thread.collectAsState()
 
     val composableScope = rememberCoroutineScope()
@@ -99,11 +101,26 @@ fun ThreadScreen(
                 state = listState
             ) {
                 items(viewModel.messages.value) { message ->
-                    MessageItem(
-                        userIcon = painterResource(R.drawable.ic_baseline_person_24),
-                        userName = message.userName,
-                        messageText = message.body
-                    )
+                    if (user.uid == message.userId) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End
+                        ) {
+                            FLipHorizontalMessageItem(
+                                userIcon = painterResource(R.drawable.ic_baseline_person_24),
+                                userName = message.userName,
+                                messageText = message.body
+                            )
+                        }
+
+                    } else {
+                        MessageItem(
+                            userIcon = painterResource(R.drawable.ic_baseline_person_24),
+                            userName = message.userName,
+                            messageText = message.body
+                        )
+                    }
+
                 }
             }
 
