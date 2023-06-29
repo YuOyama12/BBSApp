@@ -40,7 +40,6 @@ fun MainScreen(
 ) {
     val context = LocalContext.current
     val viewModel: MainViewModel = hiltViewModel()
-    if (viewModel.isFirstBoot) { viewModel.setIsFirstBoot(false) }
 
     val navController = rememberNavController()
     val navigationItems = listOf(NavScreen.ThreadsList, NavScreen.Favorite)

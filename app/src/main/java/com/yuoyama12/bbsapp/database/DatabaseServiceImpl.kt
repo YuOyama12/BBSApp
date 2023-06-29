@@ -57,7 +57,6 @@ class DatabaseServiceImpl @Inject constructor(
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
-
                 }
             }
         )

@@ -27,6 +27,7 @@ fun ThreadsListScreen(
     onItemClicked: (threadId: String) -> Unit
 ) {
     val viewModel: ThreadsListViewModel = hiltViewModel()
+    val threads by viewModel.threads.collectAsState()
     val favorites = viewModel.favorites.collectAsState()
 
     var openCreateNewThreadDialog by remember { mutableStateOf(false) }
@@ -61,7 +62,10 @@ fun ThreadsListScreen(
         }
 
         LazyColumn {
-            items(items = viewModel.threads.value) { thread ->
+            items(
+                items = threads,
+                key = { it.threadId }
+            ) { thread ->
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()

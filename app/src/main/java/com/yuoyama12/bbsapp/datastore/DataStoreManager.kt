@@ -2,7 +2,6 @@ package com.yuoyama12.bbsapp.datastore
 
 import android.content.Context
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -19,20 +18,7 @@ class DataStoreManager(private val context: Context) {
     val favorites = MutableStateFlow(SnapshotStateList<String>())
 
     companion object {
-        val IS_FIRST_BOOT = booleanPreferencesKey("isFirstBoot")
         val FAVORITES = stringPreferencesKey("favorites")
-    }
-
-    suspend fun setIsFirstBoot(isFirstBoot: Boolean) {
-        context.dataStore.edit { preferences ->
-            preferences[IS_FIRST_BOOT] = isFirstBoot
-        }
-    }
-
-    suspend fun getIsFirstBoot(): Boolean {
-        return context.dataStore.data.map { preferences ->
-            preferences[IS_FIRST_BOOT] ?: true
-        }.first()
     }
 
     suspend fun addThreadIdToFavorites(threadId: String) {
