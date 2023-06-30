@@ -3,6 +3,8 @@ package com.yuoyama12.bbsapp.ui.login
 import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,81 +30,85 @@ fun LoginScreen(
     val viewModel: LoginViewModel = hiltViewModel()
     val onLoginExecuting by viewModel.onLoginExecuting.collectAsState(false)
 
-    NormalTopAppBar(
-        text = stringResource(R.string.login_screen_app_bar_title)
-    )
-
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        val userAccount = remember { mutableStateOf(UserAccount()) }
-
-        EmailField(
-            modifier = userAccountFieldModifier,
-            value = userAccount.value.email,
-            onValueChanged = { userAccount.value = userAccount.value.copy(email = it) }
+    Column {
+        NormalTopAppBar(
+            text = stringResource(R.string.login_screen_app_bar_title)
         )
 
-        PasswordField(
-            modifier = userAccountFieldModifier,
-            value = userAccount.value.password,
-            onValueChanged = { userAccount.value = userAccount.value.copy(password = it) },
-            placeholder = stringResource(R.string.password_placeholder)
-        )
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            val userAccount = remember { mutableStateOf(UserAccount()) }
 
-        Button(
-            onClick = {
-                val accountInfoValidation = UserAccountInfoValidation(context)
+            EmailField(
+                modifier = userAccountFieldModifier,
+                value = userAccount.value.email,
+                onValueChanged = { userAccount.value = userAccount.value.copy(email = it) }
+            )
 
-                if (accountInfoValidation.isInputtedInfoValidForLogin(userAccount.value)) {
-                    viewModel.login(
-                        userAccount = userAccount.value,
-                        onTaskCompleted = {
-                            Toast.makeText(
-                                context,
-                                R.string.login_completed_message,
-                                Toast.LENGTH_SHORT
+            PasswordField(
+                modifier = userAccountFieldModifier,
+                value = userAccount.value.password,
+                onValueChanged = { userAccount.value = userAccount.value.copy(password = it) },
+                placeholder = stringResource(R.string.password_placeholder)
+            )
+
+            Button(
+                onClick = {
+                    val accountInfoValidation = UserAccountInfoValidation(context)
+
+                    if (accountInfoValidation.isInputtedInfoValidForLogin(userAccount.value)) {
+                        viewModel.login(
+                            userAccount = userAccount.value,
+                            onTaskCompleted = {
+                                Toast.makeText(
+                                    context,
+                                    R.string.login_completed_message,
+                                    Toast.LENGTH_SHORT
                                 ).show()
 
-                            moveToMainScreen()
-                        },
+                                moveToMainScreen()
+                            },
+                            onTaskFailed = {  }
+                        )
+                    }
+                },
+                modifier = userAccountButtonModifier,
+            ) {
+                Text(
+                    text = stringResource(R.string.login_button),
+                    fontSize = userAccountButtonFontSize
+                )
+            }
+
+            Button(
+                onClick = { onCreateAccountClicked() },
+                modifier = userAccountButtonModifier,
+            ) {
+                Text(
+                    text = stringResource(R.string.sign_up_button),
+                    fontSize = userAccountButtonFontSize
+                )
+            }
+
+            TextButton(
+                onClick = {
+                    viewModel.loginAsAnonymous(
+                        onTaskCompleted = { moveToMainScreen() },
                         onTaskFailed = {  }
                     )
-                }
-            },
-            modifier = userAccountButtonModifier,
-        ) {
-            Text(
-                text = stringResource(R.string.login_button),
-                fontSize = userAccountButtonFontSize
-            )
-        }
-
-        Button(
-            onClick = { onCreateAccountClicked() },
-            modifier = userAccountButtonModifier,
-        ) {
-            Text(
-                text = stringResource(R.string.sign_up_button),
-                fontSize = userAccountButtonFontSize
-            )
-        }
-
-        TextButton(
-            onClick = {
-                viewModel.loginAsAnonymous(
-                    onTaskCompleted = { moveToMainScreen() },
-                    onTaskFailed = {  }
+                },
+                modifier = userAccountButtonModifier,
+            ) {
+                Text(
+                    text = stringResource(R.string.login_as_guest_button),
+                    fontSize = userAccountButtonFontSize
                 )
-            },
-            modifier = userAccountButtonModifier,
-        ) {
-            Text(
-                text = stringResource(R.string.login_as_guest_button),
-                fontSize = userAccountButtonFontSize
-            )
+            }
         }
     }
 

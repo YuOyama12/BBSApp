@@ -4,6 +4,8 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,61 +30,65 @@ fun SignUpScreen(
     val viewModel: SignUpViewModel = hiltViewModel()
     val onSignUpExecuting by viewModel.onSignUpExecuting.collectAsState(false)
 
-    NormalTopAppBar(
-        text = stringResource(R.string.sign_up_screen_app_bar_title)
-    )
-
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        val userAccount = remember { mutableStateOf(UserAccount()) }
-
-        EmailField(
-            modifier = userAccountFieldModifier,
-            value = userAccount.value.email,
-            onValueChanged = { userAccount.value = userAccount.value.copy(email = it) }
+    Column {
+        NormalTopAppBar(
+            text = stringResource(R.string.sign_up_screen_app_bar_title)
         )
 
-        PasswordField(
-            modifier = userAccountFieldModifier,
-            value = userAccount.value.password,
-            onValueChanged = { userAccount.value = userAccount.value.copy(password = it) },
-            placeholder = stringResource(R.string.password_placeholder)
-        )
-
-        PasswordField(
-            modifier = userAccountFieldModifier,
-            value = userAccount.value.repeatedPassword,
-            onValueChanged = { userAccount.value = userAccount.value.copy(repeatedPassword = it) },
-            placeholder = stringResource(R.string.repeated_password_placeholder)
-        )
-
-        UserNameField(
-            modifier = userAccountFieldModifier,
-            value = userAccount.value.userName,
-            onValueChanged = { userAccount.value = userAccount.value.copy(userName = it) }
-        )
-
-        Button(
-            onClick = {
-                val accountInfoValidation = UserAccountInfoValidation(context)
-
-                if (accountInfoValidation.isInputtedInfoValidForSignUp(userAccount.value)) {
-                    viewModel.createNewAccount(
-                        userAccount = userAccount.value,
-                        onTaskCompleted = { moveToMainScreen() },
-                        onTaskFailed = {  }
-                    )
-                }
-            },
-            modifier = userAccountButtonModifier,
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = stringResource(R.string.sign_up_button),
-                fontSize = userAccountButtonFontSize
+            val userAccount = remember { mutableStateOf(UserAccount()) }
+
+            EmailField(
+                modifier = userAccountFieldModifier,
+                value = userAccount.value.email,
+                onValueChanged = { userAccount.value = userAccount.value.copy(email = it) }
             )
+
+            PasswordField(
+                modifier = userAccountFieldModifier,
+                value = userAccount.value.password,
+                onValueChanged = { userAccount.value = userAccount.value.copy(password = it) },
+                placeholder = stringResource(R.string.password_placeholder)
+            )
+
+            PasswordField(
+                modifier = userAccountFieldModifier,
+                value = userAccount.value.repeatedPassword,
+                onValueChanged = { userAccount.value = userAccount.value.copy(repeatedPassword = it) },
+                placeholder = stringResource(R.string.repeated_password_placeholder)
+            )
+
+            UserNameField(
+                modifier = userAccountFieldModifier,
+                value = userAccount.value.userName,
+                onValueChanged = { userAccount.value = userAccount.value.copy(userName = it) }
+            )
+
+            Button(
+                onClick = {
+                    val accountInfoValidation = UserAccountInfoValidation(context)
+
+                    if (accountInfoValidation.isInputtedInfoValidForSignUp(userAccount.value)) {
+                        viewModel.createNewAccount(
+                            userAccount = userAccount.value,
+                            onTaskCompleted = { moveToMainScreen() },
+                            onTaskFailed = {  }
+                        )
+                    }
+                },
+                modifier = userAccountButtonModifier,
+            ) {
+                Text(
+                    text = stringResource(R.string.sign_up_button),
+                    fontSize = userAccountButtonFontSize
+                )
+            }
         }
     }
 
