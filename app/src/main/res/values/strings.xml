@@ -23,6 +23,9 @@
     <string name="action_sign_up_title">アカウント作成</string>
     <string name="action_logout_title">ログアウト</string>
     <string name="logout_completed_message">ログアウトしました</string>
+    <string name="discard_data_confirmation_dialog_title">入力内容の破棄</string>
+    <string name="discard_data_confirmation_dialog_message">画面から離れると現在入力中の内容が破棄されます。\n本当に離れますか。</string>
+    <string name="discard_data_confirmation_dialog_positive_button_text">離れる</string>
     <string name="action_settings_title">設定</string>
 
     <!-- Error messages -->

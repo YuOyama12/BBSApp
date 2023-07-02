@@ -1,12 +1,15 @@
 package com.yuoyama12.bbsapp.ui.login
 
+import android.app.Activity
 import android.content.res.Configuration
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -23,12 +26,18 @@ import com.yuoyama12.bbsapp.ui.theme.BBSAppTheme
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
+    isOnTop: Boolean,
     moveToMainScreen: () -> Unit,
-    onCreateAccountClicked: () -> Unit
+    onCreateAccountClicked: () -> Unit,
+    popBackStack: () -> Unit
 ) {
     val context = LocalContext.current
     val viewModel: LoginViewModel = hiltViewModel()
     val onLoginExecuting by viewModel.onLoginExecuting.collectAsState(false)
+
+    var userAccount by rememberSaveable { mutableStateOf(UserAccount()) }
+
+    var openConfirmationDialog by remember { mutableStateOf(false) }
 
     Column {
         NormalTopAppBar(
@@ -42,18 +51,16 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val userAccount = remember { mutableStateOf(UserAccount()) }
-
             EmailField(
                 modifier = userAccountFieldModifier,
-                value = userAccount.value.email,
-                onValueChanged = { userAccount.value = userAccount.value.copy(email = it) }
+                value = userAccount.email,
+                onValueChanged = { userAccount = userAccount.copy(email = it) }
             )
 
             PasswordField(
                 modifier = userAccountFieldModifier,
-                value = userAccount.value.password,
-                onValueChanged = { userAccount.value = userAccount.value.copy(password = it) },
+                value = userAccount.password,
+                onValueChanged = { userAccount = userAccount.copy(password = it) },
                 placeholder = stringResource(R.string.password_placeholder)
             )
 
@@ -61,9 +68,9 @@ fun LoginScreen(
                 onClick = {
                     val accountInfoValidation = UserAccountInfoValidation(context)
 
-                    if (accountInfoValidation.isInputtedInfoValidForLogin(userAccount.value)) {
+                    if (accountInfoValidation.isInputtedInfoValidForLogin(userAccount)) {
                         viewModel.login(
-                            userAccount = userAccount.value,
+                            userAccount = userAccount,
                             onTaskCompleted = {
                                 Toast.makeText(
                                     context,
@@ -112,8 +119,25 @@ fun LoginScreen(
         }
     }
 
+    BackHandler(userAccount.isNotEmpty()) {
+        openConfirmationDialog = true
+    }
+
     if (onLoginExecuting) {
         OnExecutingIndicator(text = stringResource(R.string.login_execute_message))
+    }
+
+    if (openConfirmationDialog) {
+        ConfirmationDialog(
+            title = stringResource(R.string.discard_data_confirmation_dialog_title),
+            message = stringResource(R.string.discard_data_confirmation_dialog_message),
+            positiveButtonText = stringResource(R.string.discard_data_confirmation_dialog_positive_button_text),
+            onDismissRequest = { openConfirmationDialog = false },
+            onPositiveClicked = {
+                if (isOnTop) (context as Activity).finish()
+                else popBackStack()
+            }
+        )
     }
 
 }
@@ -127,8 +151,10 @@ fun LoginScreenPreview() {
             color = MaterialTheme.colorScheme.background
         ) {
             LoginScreen(
+                isOnTop = true,
                 moveToMainScreen = {},
-                onCreateAccountClicked = {}
+                onCreateAccountClicked = {},
+                popBackStack = {}
             )
         }
     }

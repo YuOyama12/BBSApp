@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.yuoyama12.bbsapp.ui.Screen
@@ -49,11 +50,14 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(Screen.Login.route) {
                         LoginScreen(
+                            isOnTop =
+                            navController.currentBackStackEntryAsState().value?.destination?.route == Screen.Login.route,
                             moveToMainScreen = {
                                 navController.popBackStack()
                                 navController.navigate(Screen.Main.route)
                             },
-                            onCreateAccountClicked = { navController.navigate(Screen.SignUp.route) }
+                            onCreateAccountClicked = { navController.navigate(Screen.SignUp.route) },
+                            popBackStack = { navController.popBackStack() }
                         )
                     }
                     composable(Screen.SignUp.route) {
@@ -65,7 +69,8 @@ class MainActivity : ComponentActivity() {
                                         inclusive = true
                                     }
                                 }
-                            }
+                            },
+                            popBackStack = { navController.popBackStack() }
                         )
                     }
                 }

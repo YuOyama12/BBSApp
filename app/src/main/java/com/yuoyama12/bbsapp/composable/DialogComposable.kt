@@ -107,3 +107,37 @@ fun SimpleInputDialog(
         }
     }
 }
+
+
+@Composable
+fun ConfirmationDialog(
+    title: String,
+    message: String = "",
+    positiveButtonText: String,
+    onDismissRequest: () -> Unit,
+    onPositiveClicked: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = { onDismissRequest() },
+        title = { Text(text = title) },
+        text = { Text(text = message) },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onPositiveClicked()
+                    onDismissRequest()
+                }
+            ) {
+                Text(text = positiveButtonText)
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = { onDismissRequest() }
+            ) {
+                Text(text = stringResource(R.string.dialog_cancel))
+            }
+        }
+
+    )
+}
