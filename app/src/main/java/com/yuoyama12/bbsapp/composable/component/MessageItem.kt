@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -26,6 +27,7 @@ import com.yuoyama12.bbsapp.ui.theme.messageBoxColor
 import com.yuoyama12.bbsapp.ui.theme.selfMessageBoxColor
 import com.yuoyama12.bbsapp.ui.theme.userNameTextColor
 
+private val messageRowPadding = 8.dp
 private const val ICON_WEIGHT = 0.1f
 private const val BOX_WEIGHT = 1 - ICON_WEIGHT
 @Composable
@@ -35,7 +37,7 @@ fun MessageItem(
     userName: String,
     messageText: String
 ) {
-    Row(modifier = modifier.padding(8.dp)) {
+    Row(modifier = modifier.padding(messageRowPadding)) {
         UserIcon(
             modifier = Modifier.weight(ICON_WEIGHT),
             userIcon = userIcon
@@ -57,12 +59,13 @@ fun FLipHorizontalMessageItem(
     userName: String,
     messageText: String
 ) {
-    Row(modifier = modifier.padding(8.dp)) {
+    Row(modifier = modifier.padding(messageRowPadding)) {
         UserTextBox(
             modifier = Modifier.weight(BOX_WEIGHT, false),
             userName = userName,
             messageText = messageText,
-            messageBoxColor = selfMessageBoxColor()
+            messageBoxColor = selfMessageBoxColor(),
+            isFLipHorizontal = true
         )
 
         UserIcon(
@@ -92,10 +95,12 @@ private fun UserTextBox(
     modifier: Modifier = Modifier,
     userName: String,
     messageText: String,
-    messageBoxColor: Color
+    messageBoxColor: Color,
+    isFLipHorizontal: Boolean = false
 ) {
     Column(
-        modifier = modifier
+        modifier = modifier,
+        horizontalAlignment = if (isFLipHorizontal) Alignment.End else Alignment.Start
     ) {
         Text(
             text = userName,
