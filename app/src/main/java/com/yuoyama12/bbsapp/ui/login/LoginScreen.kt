@@ -20,6 +20,7 @@ import com.yuoyama12.bbsapp.R
 import com.yuoyama12.bbsapp.UserAccountInfoValidation
 import com.yuoyama12.bbsapp.composable.*
 import com.yuoyama12.bbsapp.composable.component.OnExecutingIndicator
+import com.yuoyama12.bbsapp.data.FirebaseErrorState
 import com.yuoyama12.bbsapp.data.UserAccount
 import com.yuoyama12.bbsapp.ui.theme.BBSAppTheme
 
@@ -38,6 +39,7 @@ fun LoginScreen(
     var userAccount by rememberSaveable { mutableStateOf(UserAccount()) }
 
     var openConfirmationDialog by remember { mutableStateOf(false) }
+    var loginErrorState by rememberSaveable { mutableStateOf(FirebaseErrorState()) }
 
     Column {
         NormalTopAppBar(
@@ -80,7 +82,10 @@ fun LoginScreen(
 
                                 moveToMainScreen()
                             },
-                            onTaskFailed = {  }
+                            onTaskFailed = { errorCode ->
+                                loginErrorState =
+                                    loginErrorState.copy(openDialog = true, errorCode = errorCode)
+                            }
                         )
                     }
                 },
@@ -106,7 +111,10 @@ fun LoginScreen(
                 onClick = {
                     viewModel.loginAsAnonymous(
                         onTaskCompleted = { moveToMainScreen() },
-                        onTaskFailed = {  }
+                        onTaskFailed = { errorCode ->
+                            loginErrorState =
+                                loginErrorState.copy(openDialog = true, errorCode = errorCode)
+                        }
                     )
                 },
                 modifier = userAccountButtonModifier,
@@ -137,6 +145,13 @@ fun LoginScreen(
                 if (isOnTop) (context as Activity).finish()
                 else popBackStack()
             }
+        )
+    }
+
+    if (loginErrorState.openDialog && loginErrorState.errorCode != null) {
+        FirebaseAuthenticationErrorDialog(
+            errorCode = loginErrorState.errorCode!!,
+            onDismissRequest = { loginErrorState = loginErrorState.reset() }
         )
     }
 

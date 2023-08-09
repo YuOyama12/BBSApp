@@ -18,10 +18,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.yuoyama12.bbsapp.R
+import com.yuoyama12.bbsapp.firebaseerror.AuthenticationError
 
 private val spacer = Modifier.padding(vertical = 3.dp)
 private val messagePadding = Modifier.padding(bottom = 28.dp)
-
 @Composable
 fun SimpleInputDialog(
     title: String,
@@ -108,7 +108,6 @@ fun SimpleInputDialog(
     }
 }
 
-
 @Composable
 fun ConfirmationDialog(
     title: String,
@@ -138,6 +137,53 @@ fun ConfirmationDialog(
                 Text(text = stringResource(R.string.dialog_cancel))
             }
         }
+    )
+}
 
+@Composable
+fun FirebaseAuthenticationErrorDialog(
+    errorCode: String,
+    onDismissRequest: () -> Unit
+) {
+    val message =
+        when (errorCode) {
+            AuthenticationError.UserNotFound.code -> stringResource(R.string.error_message_user_not_found)
+            AuthenticationError.WrongPassword.code -> stringResource(R.string.error_message_wrong_password)
+            AuthenticationError.TooManyRequests.code -> stringResource(R.string.error_too_many_requests)
+            else -> stringResource(R.string.error_message_miscellaneous)
+        }
+
+    ErrorDialog(
+        title = stringResource(R.string.login_error_dialog_title_text),
+        message = message,
+        positiveButtonText = stringResource(R.string.error_dialog_positive_button_text),
+        onDismissRequest = onDismissRequest,
+        onPositiveClicked = onDismissRequest
+    )
+
+}
+
+@Composable
+private fun ErrorDialog(
+    title: String,
+    message: String,
+    positiveButtonText: String,
+    onDismissRequest: () -> Unit,
+    onPositiveClicked: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = { onDismissRequest() },
+        title = { Text(text = title) },
+        text = { Text(text = message) },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onPositiveClicked()
+                    onDismissRequest()
+                }
+            ) {
+                Text(text = positiveButtonText)
+            }
+        }
     )
 }

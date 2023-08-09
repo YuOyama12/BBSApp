@@ -27,12 +27,18 @@
     <string name="discard_data_confirmation_dialog_message">画面から離れると現在入力中の内容が破棄されます。\n本当に離れますか。</string>
     <string name="discard_data_confirmation_dialog_positive_button_text">離れる</string>
     <string name="action_settings_title">設定</string>
+    <string name="login_error_dialog_title_text">ログインエラー</string>
+    <string name="error_dialog_positive_button_text">確認</string>
 
     <!-- Error messages -->
     <string name="error_message_email">有効なメールアドレスではありません</string>
     <string name="error_message_password">パスワードは6文字以上で設定してください</string>
     <string name="error_message_repeated_password">パスワードが一致しません</string>
     <string name="error_message_user_name">ユーザー名を入力してください</string>
+    <string name="error_message_user_not_found">ログインに失敗しました。メールアドレスが正しく入力されているかどうかを確認してください。</string>
+    <string name="error_message_wrong_password">ログインに失敗しました。パスワードが間違っています。入力したパスワードを確認してください。</string>
+    <string name="error_too_many_requests">ログインに失敗しました。連続してログインに失敗したため、一時的にログインができなくなります。しばらく時間をおいて再度お試しください。</string>
+    <string name="error_message_miscellaneous">ログインに失敗しました。しばらく時間をおいて再度お試しください。</string>
 
 
 
