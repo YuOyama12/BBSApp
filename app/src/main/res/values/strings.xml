@@ -28,6 +28,7 @@
     <string name="discard_data_confirmation_dialog_positive_button_text">離れる</string>
     <string name="action_settings_title">設定</string>
     <string name="login_error_dialog_title_text">ログインエラー</string>
+    <string name="sign_up_error_dialog_title_text">サインアップエラー</string>
     <string name="error_dialog_positive_button_text">確認</string>
 
     <!-- Error messages -->
@@ -38,7 +39,9 @@
     <string name="error_message_user_not_found">ログインに失敗しました。メールアドレスが正しく入力されているかどうかを確認してください。</string>
     <string name="error_message_wrong_password">ログインに失敗しました。パスワードが間違っています。入力したパスワードを確認してください。</string>
     <string name="error_too_many_requests">ログインに失敗しました。連続してログインに失敗したため、一時的にログインができなくなります。しばらく時間をおいて再度お試しください。</string>
-    <string name="error_message_miscellaneous">ログインに失敗しました。しばらく時間をおいて再度お試しください。</string>
+    <string name="error_message_miscellaneous_login">ログインに失敗しました。しばらく時間をおいて再度お試しください。</string>
+    <string name="error_email_already_in_use">アカウントが作成できませんでした。このメールアドレスは既に使用されています。別のメールアドレスでお試しください。</string>
+    <string name="error_message_miscellaneous_sign_up">アカウントが作成できませんでした。しばらく時間をおいて再度お試しください。</string>
 
 
 

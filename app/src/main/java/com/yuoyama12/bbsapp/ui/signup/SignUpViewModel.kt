@@ -1,8 +1,10 @@
 package com.yuoyama12.bbsapp.ui.signup
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.yuoyama12.bbsapp.data.UserAccount
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
+private const val TAG = "SignUpViewModel"
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val auth: FirebaseAuth
@@ -24,7 +27,7 @@ class SignUpViewModel @Inject constructor(
     fun createNewAccount(
         userAccount: UserAccount,
         onTaskCompleted: () -> Unit,
-        onTaskFailed: () -> Unit
+        onTaskFailed: (errorCode: String) -> Unit
     ) {
         if (auth.currentUser != null) {
             if (auth.currentUser!!.isAnonymous) {
@@ -40,6 +43,7 @@ class SignUpViewModel @Inject constructor(
         setOnSignUpExecuting(true)
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { firstTask ->
+
                 if (firstTask.isSuccessful) {
                     auth.signInWithEmailAndPassword(email, password)
                     val userProfile = userProfileChangeRequest { displayName = userName }
@@ -51,14 +55,23 @@ class SignUpViewModel @Inject constructor(
                                 setOnSignUpExecuting(false)
                                 onTaskCompleted()
                             }
-                            else {
-                                setOnSignUpExecuting(false)
-                                onTaskFailed()
+                        }
+                        .addOnFailureListener { exception ->
+                            setOnSignUpExecuting(false)
+
+                            when (exception) {
+                                is FirebaseAuthException -> onTaskFailed(exception.errorCode)
+                                else -> Log.w(TAG, exception)
                             }
                         }
-                } else {
-                    setOnSignUpExecuting(false)
-                    onTaskFailed()
+                }
+            }
+            .addOnFailureListener { exception ->
+                setOnSignUpExecuting(false)
+
+                when (exception) {
+                    is FirebaseAuthException -> onTaskFailed(exception.errorCode)
+                    else -> Log.w(TAG, exception)
                 }
             }
     }
@@ -66,7 +79,7 @@ class SignUpViewModel @Inject constructor(
     private fun linkAccount(
         userAccount: UserAccount,
         onTaskCompleted: () -> Unit,
-        onTaskFailed: () -> Unit
+        onTaskFailed: (errorCode: String) -> Unit
     ) {
         val credential = EmailAuthProvider.getCredential(userAccount.email, userAccount.password)
         val userName = userAccount.userName
@@ -84,14 +97,23 @@ class SignUpViewModel @Inject constructor(
                                 setOnSignUpExecuting(false)
                                 onTaskCompleted()
                             }
-                            else {
-                                setOnSignUpExecuting(false)
-                                onTaskFailed()
+                        }
+                        .addOnFailureListener { exception ->
+                            setOnSignUpExecuting(false)
+
+                            when (exception) {
+                                is FirebaseAuthException -> onTaskFailed(exception.errorCode)
+                                else -> Log.w(TAG, exception)
                             }
                         }
-                } else {
-                    setOnSignUpExecuting(false)
-                    onTaskFailed()
+                }
+            }
+            .addOnFailureListener { exception ->
+                setOnSignUpExecuting(false)
+
+                when (exception) {
+                    is FirebaseAuthException -> onTaskFailed(exception.errorCode)
+                    else -> Log.w(TAG, exception)
                 }
             }
     }

@@ -18,7 +18,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.yuoyama12.bbsapp.R
-import com.yuoyama12.bbsapp.firebaseerror.AuthenticationError
+import com.yuoyama12.bbsapp.firebaseerror.LoginError
+import com.yuoyama12.bbsapp.firebaseerror.SignUpError
 
 private val spacer = Modifier.padding(vertical = 3.dp)
 private val messagePadding = Modifier.padding(bottom = 28.dp)
@@ -141,20 +142,41 @@ fun ConfirmationDialog(
 }
 
 @Composable
-fun FirebaseAuthenticationErrorDialog(
+fun LoginErrorDialog(
     errorCode: String,
     onDismissRequest: () -> Unit
 ) {
     val message =
         when (errorCode) {
-            AuthenticationError.UserNotFound.code -> stringResource(R.string.error_message_user_not_found)
-            AuthenticationError.WrongPassword.code -> stringResource(R.string.error_message_wrong_password)
-            AuthenticationError.TooManyRequests.code -> stringResource(R.string.error_too_many_requests)
-            else -> stringResource(R.string.error_message_miscellaneous)
+            LoginError.UserNotFound.code -> stringResource(R.string.error_message_user_not_found)
+            LoginError.WrongPassword.code -> stringResource(R.string.error_message_wrong_password)
+            LoginError.TooManyRequests.code -> stringResource(R.string.error_too_many_requests)
+            else -> stringResource(R.string.error_message_miscellaneous_login)
         }
 
     ErrorDialog(
         title = stringResource(R.string.login_error_dialog_title_text),
+        message = message,
+        positiveButtonText = stringResource(R.string.error_dialog_positive_button_text),
+        onDismissRequest = onDismissRequest,
+        onPositiveClicked = onDismissRequest
+    )
+
+}
+
+@Composable
+fun SignUpErrorDialog(
+    errorCode: String,
+    onDismissRequest: () -> Unit
+) {
+    val message =
+        when (errorCode) {
+            SignUpError.EmailAlreadyInUse.code -> stringResource(R.string.error_email_already_in_use)
+            else -> stringResource(R.string.error_message_miscellaneous_sign_up)
+        }
+
+    ErrorDialog(
+        title = stringResource(R.string.sign_up_error_dialog_title_text),
         message = message,
         positiveButtonText = stringResource(R.string.error_dialog_positive_button_text),
         onDismissRequest = onDismissRequest,

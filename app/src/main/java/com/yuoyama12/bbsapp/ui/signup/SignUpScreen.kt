@@ -20,6 +20,7 @@ import com.yuoyama12.bbsapp.R
 import com.yuoyama12.bbsapp.UserAccountInfoValidation
 import com.yuoyama12.bbsapp.composable.*
 import com.yuoyama12.bbsapp.composable.component.OnExecutingIndicator
+import com.yuoyama12.bbsapp.data.FirebaseErrorState
 import com.yuoyama12.bbsapp.data.UserAccount
 import com.yuoyama12.bbsapp.ui.theme.BBSAppTheme
 
@@ -36,6 +37,7 @@ fun SignUpScreen(
     var userAccount by rememberSaveable { mutableStateOf(UserAccount()) }
 
     var openConfirmationDialog by remember { mutableStateOf(false) }
+    var signUpErrorState by rememberSaveable { mutableStateOf(FirebaseErrorState()) }
 
     Column {
         NormalTopAppBar(
@@ -83,7 +85,10 @@ fun SignUpScreen(
                         viewModel.createNewAccount(
                             userAccount = userAccount,
                             onTaskCompleted = { moveToMainScreen() },
-                            onTaskFailed = {  }
+                            onTaskFailed = { errorCode ->
+                                signUpErrorState =
+                                    signUpErrorState.copy(openDialog = true, errorCode = errorCode)
+                            }
                         )
                     }
                 },
@@ -112,6 +117,13 @@ fun SignUpScreen(
             positiveButtonText = stringResource(R.string.discard_data_confirmation_dialog_positive_button_text),
             onDismissRequest = { openConfirmationDialog = false },
             onPositiveClicked = { popBackStack() }
+        )
+    }
+
+    if (signUpErrorState.openDialog && signUpErrorState.errorCode != null) {
+        SignUpErrorDialog(
+            errorCode = signUpErrorState.errorCode!!,
+            onDismissRequest = { signUpErrorState = signUpErrorState.reset() }
         )
     }
 

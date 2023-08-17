@@ -149,7 +149,7 @@ fun LoginScreen(
     }
 
     if (loginErrorState.openDialog && loginErrorState.errorCode != null) {
-        FirebaseAuthenticationErrorDialog(
+        LoginErrorDialog(
             errorCode = loginErrorState.errorCode!!,
             onDismissRequest = { loginErrorState = loginErrorState.reset() }
         )

@@ -6,7 +6,7 @@ import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.yuoyama12.bbsapp.data.UserAccount
-import com.yuoyama12.bbsapp.firebaseerror.AuthenticationError
+import com.yuoyama12.bbsapp.firebaseerror.LoginError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,10 +22,6 @@ class LoginViewModel @Inject constructor(
 
     private fun setOnLoginExecuting(onExecuting: Boolean) {
         _onLoginExecuting.value = onExecuting
-    }
-
-    fun isNotLogin(): Boolean {
-        return auth.currentUser == null
     }
 
     fun login(
@@ -48,7 +44,7 @@ class LoginViewModel @Inject constructor(
 
                 when(exception) {
                     is FirebaseAuthException -> onTaskFailed(exception.errorCode)
-                    is FirebaseTooManyRequestsException -> onTaskFailed(AuthenticationError.TooManyRequests.code)
+                    is FirebaseTooManyRequestsException -> onTaskFailed(LoginError.TooManyRequests.code)
                     else -> Log.w(TAG, exception)
                 }
             }
