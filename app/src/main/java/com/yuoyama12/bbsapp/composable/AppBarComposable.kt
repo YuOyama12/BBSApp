@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.yuoyama12.bbsapp.composable
 
 import androidx.compose.material3.*
@@ -9,7 +11,7 @@ import androidx.compose.ui.text.style.TextOverflow
 fun NormalTopAppBar(
     text: String
 ) {
-    SmallTopAppBar(
+    TopAppBar(
         title = {
             Text(
                 text = text,
@@ -30,7 +32,7 @@ fun NormalActionTopAppBar(
     actionIcon: ImageVector,
     popupMenu: @Composable () -> Unit = {}
 ) {
-    SmallTopAppBar(
+    TopAppBar(
         title = {
             Text(
                 text = text,

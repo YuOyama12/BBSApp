@@ -30,7 +30,7 @@ fun <E : Enum<*>> SimplePopupMenu(
                     }
                 )
 
-                MenuDefaults.Divider()
+                HorizontalDivider()
             }
         }
     }
