@@ -4,11 +4,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -23,20 +27,25 @@ import com.yuoyama12.bbsapp.composable.keyboardAsState
 import kotlinx.coroutines.launch
 
 private const val DEFAULT_LIST_INDEX = -1
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ThreadScreen(
     threadId: String,
     onNavigationIconClicked: () -> Unit
 ) {
+    val localDensity = LocalDensity.current
+
     val viewModel: ThreadViewModel = hiltViewModel()
     val user = viewModel.user
-    val thread = viewModel.thread.collectAsState()
+    val thread by viewModel.thread.collectAsState()
+    val messages by viewModel.messages.collectAsState()
 
     val composableScope = rememberCoroutineScope()
     val keyboardState by keyboardAsState()
     val listState = rememberLazyListState()
     var visibleLastItemIndexInList by remember { mutableStateOf(DEFAULT_LIST_INDEX) }
+
+    var columnHeightDp by remember { mutableStateOf(0.dp) }
 
     LaunchedEffect(Unit) {
         viewModel.initialize(threadId)
@@ -48,11 +57,11 @@ fun ThreadScreen(
         }
     }
 
-    LaunchedEffect(listState.firstVisibleItemIndex) {
+    LaunchedEffect(listState.isScrollInProgress, messages.size) {
         visibleLastItemIndexInList = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: DEFAULT_LIST_INDEX
     }
 
-    LaunchedEffect(keyboardState) {
+    LaunchedEffect(columnHeightDp, messages.size) {
         if (visibleLastItemIndexInList == DEFAULT_LIST_INDEX) return@LaunchedEffect
 
         if (keyboardState == Keyboard.Opened) {
@@ -69,10 +78,10 @@ fun ThreadScreen(
 
     Scaffold(
         topBar = {
-            SmallTopAppBar(
+            TopAppBar(
                 title = {
                     Text(
-                        text = thread.value.title,
+                        text = thread.title,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -85,7 +94,7 @@ fun ThreadScreen(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer
                 )
             )
@@ -93,14 +102,21 @@ fun ThreadScreen(
     ) { padding ->
         Column(
             modifier = Modifier
-                .padding(padding)
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .consumeWindowInsets(padding)
+                .imePadding()
         ) {
             LazyColumn(
-                modifier = Modifier.weight(1f),
-                state = listState
+                modifier = Modifier
+                    .onGloballyPositioned { coordinates ->
+                        columnHeightDp = with(localDensity) { coordinates.size.height.toDp() }
+                    }
+                    .weight(1f),
+                state = listState,
+                contentPadding = padding
             ) {
-                items(viewModel.messages.value) { message ->
+                items(messages) { message ->
                     if (user.uid == message.userId) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -112,7 +128,6 @@ fun ThreadScreen(
                                 messageText = message.body
                             )
                         }
-
                     } else {
                         MessageItem(
                             userIcon = painterResource(R.drawable.ic_baseline_person_24),
@@ -120,11 +135,12 @@ fun ThreadScreen(
                             messageText = message.body
                         )
                     }
-
                 }
             }
 
-            MessageInputBar(modifier = Modifier.padding(all = 2.dp)) { messageBody ->
+            MessageInputBar(
+                modifier = Modifier.padding(all = 2.dp)
+            ) { messageBody ->
                 viewModel.postNewMessage(messageBody, threadId)
             }
         }

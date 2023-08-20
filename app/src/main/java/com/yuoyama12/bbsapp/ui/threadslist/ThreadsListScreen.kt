@@ -78,7 +78,7 @@ fun ThreadsListScreen(
                         if (favorite) { viewModel.addThreadIdToFavorites(threadId) }
                         else { viewModel.removeThreadIdFromFavorites(threadId) }
                     }
-                    Divider(thickness = 0.1.dp)
+                    HorizontalDivider()
                 }
             }
         }

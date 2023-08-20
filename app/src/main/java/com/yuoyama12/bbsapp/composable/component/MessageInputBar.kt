@@ -29,8 +29,8 @@ fun MessageInputBar(
 
         Column(
             modifier = Modifier
-                .weight(0.15f)
-                .fillMaxHeight(),
+                .fillMaxHeight()
+                .weight(0.15f),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
