@@ -36,7 +36,8 @@ import com.yuoyama12.bbsapp.ui.threadslist.ThreadsListScreen
 @Composable
 fun MainScreen(
     moveToSignUpScreen: () -> Unit,
-    moveToLoginScreen: () -> Unit
+    moveToLoginScreen: () -> Unit,
+    moveToSettingScreen: () -> Unit
 ) {
     val context = LocalContext.current
     val viewModel: MainViewModel = hiltViewModel()
@@ -79,7 +80,7 @@ fun MainScreen(
 
                                     moveToLoginScreen()
                                 }
-                                ActionsInMoreVert.Actions.Settings -> {  }
+                                ActionsInMoreVert.Actions.Settings -> { moveToSettingScreen() }
                             }
                         }
                     )

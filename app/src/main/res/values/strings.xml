@@ -30,6 +30,13 @@
     <string name="login_error_dialog_title_text">ログインエラー</string>
     <string name="sign_up_error_dialog_title_text">サインアップエラー</string>
     <string name="error_dialog_positive_button_text">確認</string>
+    <string name="setting_screen_app_bar_title">設定</string>
+    <string name="setting_group_title_about_login_info">ログイン情報</string>
+    <string name="setting_title_about_changing_login_info">ログイン情報の変更</string>
+    <string name="setting_title_about_deleting_the_account">アカウント削除</string>
+
+
+
 
     <!-- Error messages -->
     <string name="error_message_email">有効なメールアドレスではありません</string>

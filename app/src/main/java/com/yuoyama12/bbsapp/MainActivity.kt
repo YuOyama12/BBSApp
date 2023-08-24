@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.yuoyama12.bbsapp.ui.Screen
 import com.yuoyama12.bbsapp.ui.login.LoginScreen
 import com.yuoyama12.bbsapp.ui.main.MainScreen
+import com.yuoyama12.bbsapp.ui.setting.SettingScreen
 import com.yuoyama12.bbsapp.ui.signup.SignUpScreen
 import com.yuoyama12.bbsapp.ui.theme.BBSAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,7 +49,8 @@ class MainActivity : ComponentActivity() {
                                         inclusive = true
                                     }
                                 }
-                            }
+                            },
+                            moveToSettingScreen = { navController.navigate(Screen.Setting.route) }
                         )
                     }
                     composable(Screen.Login.route) {
@@ -76,6 +78,9 @@ class MainActivity : ComponentActivity() {
                             popBackStack = { navController.popBackStack() }
                         )
                     }
+                    composable(Screen.Setting.route) {
+                        SettingScreen()
+                    }
                 }
 
             }
@@ -90,7 +95,8 @@ fun DefaultPreview() {
     BBSAppTheme {
         MainScreen(
             moveToSignUpScreen = {  },
-            moveToLoginScreen = {  }
+            moveToLoginScreen = {  },
+            moveToSettingScreen = {  }
         )
     }
 }
