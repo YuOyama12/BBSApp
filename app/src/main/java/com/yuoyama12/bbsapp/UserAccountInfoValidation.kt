@@ -60,6 +60,16 @@ class UserAccountInfoValidation(private val context: Context) {
         return true
     }
 
+    fun isInputtedEmailValid(email: String): Boolean {
+        return if (isValidEmail(email)) {
+            true
+        } else {
+            showMessage(R.string.error_message_email)
+            false
+        }
+
+    }
+
     private fun showMessage(@StringRes message: Int) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }

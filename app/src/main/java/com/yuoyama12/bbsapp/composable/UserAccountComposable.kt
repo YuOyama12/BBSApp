@@ -2,6 +2,7 @@ package com.yuoyama12.bbsapp.composable
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
@@ -50,7 +51,8 @@ fun PasswordField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChanged: (String) -> Unit,
-    placeholder: String
+    placeholder: String,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
     var isVisible by remember { mutableStateOf(false) }
 
@@ -81,6 +83,7 @@ fun PasswordField(
             }
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        keyboardActions = keyboardActions,
         visualTransformation = visualTransformation
     )
 }

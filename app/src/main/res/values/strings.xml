@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">BBSApp</string>
     <string name="dialog_cancel">キャンセル</string>
+    <string name="button_next">次へ</string>
     <string name="threads_list_navigation_label">スレッド一覧</string>
     <string name="create_new_thread_button">スレッド新規作成</string>
     <string name="dialog_create_new_thread_title">スレッド新規作成</string>
@@ -29,11 +30,23 @@
     <string name="action_settings_title">設定</string>
     <string name="login_error_dialog_title_text">ログインエラー</string>
     <string name="sign_up_error_dialog_title_text">サインアップエラー</string>
+    <string name="verification_error_dialog_title_text">認証エラー</string>
     <string name="error_dialog_positive_button_text">確認</string>
     <string name="setting_screen_app_bar_title">設定</string>
     <string name="setting_group_title_about_login_info">ログイン情報</string>
-    <string name="setting_title_about_changing_login_info">ログイン情報の変更</string>
+    <string name="setting_title_about_changing_mail_address">メールアドレスの変更</string>
+    <string name="setting_title_about_changing_password">パスワードの再設定</string>
     <string name="setting_title_about_deleting_the_account">アカウント削除</string>
+    <string name="verify_password_screen_header">パスワードを入力してください。</string>
+    <string name="verify_message_for_changing_mail_address_message">メールアドレスの変更を続けるにはパスワードを入力してください。</string>
+    <string name="verify_password_screen_app_bar_title">パスワード確認</string>
+    <string name="change_mail_address_screen_header">新しいメールアドレスを入力してください。</string>
+    <string name="change_mail_address_screen_mail_header">現在のメールアドレス：\n%1$s</string>
+    <string name="change_mail_address_screen_caution_message">※ご利用の端末で使用可能なメールアドレスにしてください。</string>
+    <string name="change_mail_address_screen_submit_button">変更</string>
+    <string name="change_mail_address_complete_message">変更が完了しました</string>
+    <string name="miscellaneous_error_dialog_title_text">エラー</string>
+
 
 
 
@@ -43,12 +56,16 @@
     <string name="error_message_password">パスワードは6文字以上で設定してください</string>
     <string name="error_message_repeated_password">パスワードが一致しません</string>
     <string name="error_message_user_name">ユーザー名を入力してください</string>
-    <string name="error_message_user_not_found">ログインに失敗しました。メールアドレスが正しく入力されているかどうかを確認してください。</string>
-    <string name="error_message_wrong_password">ログインに失敗しました。パスワードが間違っています。入力したパスワードを確認してください。</string>
-    <string name="error_too_many_requests">ログインに失敗しました。連続してログインに失敗したため、一時的にログインができなくなります。しばらく時間をおいて再度お試しください。</string>
-    <string name="error_message_miscellaneous_login">ログインに失敗しました。しばらく時間をおいて再度お試しください。</string>
+    <string name="error_login_message_user_not_found">ログインに失敗しました。メールアドレスが正しく入力されているかどうかを確認してください。</string>
+    <string name="error_login_message_wrong_password">ログインに失敗しました。パスワードが間違っています。入力したパスワードを確認してください。</string>
+    <string name="error_login_message_too_many_requests">ログインに失敗しました。連続してログインに失敗したため、一時的にログインができなくなります。しばらく時間をおいて再度お試しください。</string>
+    <string name="error_login_message_miscellaneous_login">ログインに失敗しました。しばらく時間をおいて再度お試しください。</string>
+    <string name="error_verification_message_wrong_password">パスワードが間違っています。入力したパスワードを確認してください。</string>
+    <string name="error_verification_message_too_many_requests">連続して間違ったパスワードを入力したため、一時的に認証ができなくなります。しばらく時間をおいて再度お試しください。</string>
+    <string name="error_verification_message_miscellaneous_login">認証に失敗しました。しばらく時間をおいて再度お試しください。</string>
     <string name="error_email_already_in_use">アカウントが作成できませんでした。このメールアドレスは既に使用されています。別のメールアドレスでお試しください。</string>
     <string name="error_message_miscellaneous_sign_up">アカウントが作成できませんでした。しばらく時間をおいて再度お試しください。</string>
+    <string name="error_message_miscellaneous">エラーが発生しました。しばらく時間をおいて再度お試しください。</string>
 
 
 

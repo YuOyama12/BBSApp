@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -15,8 +16,10 @@ import com.yuoyama12.bbsapp.ui.Screen
 import com.yuoyama12.bbsapp.ui.login.LoginScreen
 import com.yuoyama12.bbsapp.ui.main.MainScreen
 import com.yuoyama12.bbsapp.ui.setting.SettingScreen
+import com.yuoyama12.bbsapp.ui.settingitem.changemailaddress.ChangeMailAddressScreen
 import com.yuoyama12.bbsapp.ui.signup.SignUpScreen
 import com.yuoyama12.bbsapp.ui.theme.BBSAppTheme
+import com.yuoyama12.bbsapp.ui.verifypassword.VerifyPasswordScreen
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -78,11 +81,29 @@ class MainActivity : ComponentActivity() {
                             popBackStack = { navController.popBackStack() }
                         )
                     }
-                    composable(Screen.Setting.route) {
-                        SettingScreen()
+                    composable(Screen.Setting.route) { backStackEntry ->
+                        SettingScreen(
+                            moveTo = { screen ->
+                                if (backStackEntry.lifecycle.currentState == Lifecycle.State.RESUMED) {
+                                    navController.navigate(screen.route)
+                                }
+                            }
+                        )
+                    }
+                    composable(Screen.VerifyPasswordForChangingMailAddress.route) {
+                        VerifyPasswordScreen(
+                            onVerifySuccess = { navController.navigate(Screen.ChangeMailAddress.route) }
+                        )
+                    }
+                    composable(Screen.ChangeMailAddress.route) {
+                        ChangeMailAddressScreen (
+                            moveToMainScreen = {
+                                navController.popBackStack()
+                                navController.navigate(Screen.Main.route)
+                            }
+                        )
                     }
                 }
-
             }
         }
     }

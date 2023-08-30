@@ -148,10 +148,10 @@ fun LoginErrorDialog(
 ) {
     val message =
         when (errorCode) {
-            LoginError.UserNotFound.code -> stringResource(R.string.error_message_user_not_found)
-            LoginError.WrongPassword.code -> stringResource(R.string.error_message_wrong_password)
-            LoginError.TooManyRequests.code -> stringResource(R.string.error_too_many_requests)
-            else -> stringResource(R.string.error_message_miscellaneous_login)
+            LoginError.UserNotFound.code -> stringResource(R.string.error_login_message_user_not_found)
+            LoginError.WrongPassword.code -> stringResource(R.string.error_login_message_wrong_password)
+            LoginError.TooManyRequests.code -> stringResource(R.string.error_login_message_too_many_requests)
+            else -> stringResource(R.string.error_login_message_miscellaneous_login)
         }
 
     ErrorDialog(
@@ -178,6 +178,42 @@ fun SignUpErrorDialog(
     ErrorDialog(
         title = stringResource(R.string.sign_up_error_dialog_title_text),
         message = message,
+        positiveButtonText = stringResource(R.string.error_dialog_positive_button_text),
+        onDismissRequest = onDismissRequest,
+        onPositiveClicked = onDismissRequest
+    )
+
+}
+
+@Composable
+fun PasswordVerificationErrorDialog(
+    errorCode: String,
+    onDismissRequest: () -> Unit
+) {
+    val message =
+        when (errorCode) {
+            LoginError.WrongPassword.code -> stringResource(R.string.error_verification_message_wrong_password)
+            LoginError.TooManyRequests.code -> stringResource(R.string.error_verification_message_too_many_requests)
+            else -> stringResource(R.string.error_verification_message_miscellaneous_login)
+        }
+
+    ErrorDialog(
+        title = stringResource(R.string.verification_error_dialog_title_text),
+        message = message,
+        positiveButtonText = stringResource(R.string.error_dialog_positive_button_text),
+        onDismissRequest = onDismissRequest,
+        onPositiveClicked = onDismissRequest
+    )
+
+}
+
+@Composable
+fun MiscellaneousErrorDialog(
+    onDismissRequest: () -> Unit
+) {
+    ErrorDialog(
+        title = stringResource(R.string.miscellaneous_error_dialog_title_text),
+        message = stringResource(R.string.error_message_miscellaneous),
         positiveButtonText = stringResource(R.string.error_dialog_positive_button_text),
         onDismissRequest = onDismissRequest,
         onPositiveClicked = onDismissRequest

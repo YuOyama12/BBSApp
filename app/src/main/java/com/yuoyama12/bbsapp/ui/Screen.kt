@@ -11,4 +11,10 @@ sealed class Screen(val route: String) {
             "${Thread.route}/$id"
     }
     object Setting : Screen(SETTING_SCREEN)
+    object VerifyPasswordForChangingMailAddress : Screen(VERIFY_PASSWORD_SCREEN + "forChangingMailAddress")
+    object VerifyPasswordForChangingPassword : Screen(VERIFY_PASSWORD_SCREEN + "forChangingPassword")
+
+    object ChangeMailAddress : Screen(CHANGE_MAIL_ADDRESS_SCREEN)
+    object ChangePassword : Screen(CHANGE_PASSWORD_SCREEN)
+
 }
