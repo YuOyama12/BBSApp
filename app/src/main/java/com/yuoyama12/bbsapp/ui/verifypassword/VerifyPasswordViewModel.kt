@@ -3,6 +3,7 @@ package com.yuoyama12.bbsapp.ui.verifypassword
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.firebase.FirebaseTooManyRequestsException
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.yuoyama12.bbsapp.firebaseerror.LoginError
@@ -29,8 +30,9 @@ class VerifyPasswordViewModel @Inject constructor(
         onFailure: (errorCode: String) -> Unit
     ) {
         setOnVerifyExecuting(true)
+        val credential = EmailAuthProvider.getCredential(auth.currentUser!!.email!!, password)
 
-        auth.signInWithEmailAndPassword(auth.currentUser!!.email!!, password)
+        auth.currentUser!!.reauthenticate(credential)
             .addOnCompleteListener { task ->
                 setOnVerifyExecuting(false)
 

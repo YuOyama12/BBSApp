@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -52,7 +53,8 @@ fun PasswordField(
     value: String,
     onValueChanged: (String) -> Unit,
     placeholder: String,
-    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    keyboardActions: KeyboardActions =
+        KeyboardActions {  },
 ) {
     var isVisible by remember { mutableStateOf(false) }
 
@@ -82,7 +84,10 @@ fun PasswordField(
                 )
             }
         },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Done
+        ),
         keyboardActions = keyboardActions,
         visualTransformation = visualTransformation
     )

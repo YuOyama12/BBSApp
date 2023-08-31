@@ -37,7 +37,10 @@ class ChangeMailAddressViewModel @Inject constructor(
             .addOnCompleteListener { task ->
                 setOnUpdateExecuting(false)
 
-                if (task.isSuccessful) onSuccess()
+                if (task.isSuccessful) {
+                    currentUser.sendEmailVerification()
+                    onSuccess()
+                }
             }
             .addOnFailureListener { exception ->
                 setOnUpdateExecuting(false)

@@ -25,6 +25,7 @@ import com.yuoyama12.bbsapp.R
 import com.yuoyama12.bbsapp.UserAccountInfoValidation
 import com.yuoyama12.bbsapp.composable.*
 import com.yuoyama12.bbsapp.composable.component.OnExecutingIndicator
+import com.yuoyama12.bbsapp.data.FirebaseErrorState
 
 private const val TAG = "ChangeMailAddressScreen"
 @Composable
@@ -35,7 +36,7 @@ fun ChangeMailAddressScreen(moveToMainScreen: () -> Unit) {
 
     var newEmail by rememberSaveable { mutableStateOf("") }
     val changeCompleteMessage = stringResource(R.string.change_mail_address_complete_message)
-    var openErrorDialog by rememberSaveable { mutableStateOf(false) }
+    var errorState by rememberSaveable { mutableStateOf(FirebaseErrorState()) }
 
     Column {
         NormalTopAppBar(
@@ -94,7 +95,9 @@ fun ChangeMailAddressScreen(moveToMainScreen: () -> Unit) {
                             },
                             onFailure = { errorCode ->
                                 Log.d(TAG, errorCode)
-                                openErrorDialog = true
+
+                                errorState =
+                                    errorState.copy(openDialog = true, errorCode = errorCode)
                             }
                         )
                     }
@@ -111,8 +114,11 @@ fun ChangeMailAddressScreen(moveToMainScreen: () -> Unit) {
 
     if (onUpdateExecuting) { OnExecutingIndicator() }
 
-    if (openErrorDialog) {
-        MiscellaneousErrorDialog { openErrorDialog = false }
+    if (errorState.openDialog && errorState.errorCode != null) {
+        MiscellaneousErrorDialog(
+            errorCode = errorState.errorCode!!,
+            onDismissRequest = { errorState = errorState.reset() }
+        )
     }
 
 }

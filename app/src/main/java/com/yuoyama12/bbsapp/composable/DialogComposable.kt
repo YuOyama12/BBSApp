@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.yuoyama12.bbsapp.R
 import com.yuoyama12.bbsapp.firebaseerror.LoginError
+import com.yuoyama12.bbsapp.firebaseerror.MiscellaneousError
 import com.yuoyama12.bbsapp.firebaseerror.SignUpError
 
 private val spacer = Modifier.padding(vertical = 3.dp)
@@ -209,11 +210,18 @@ fun PasswordVerificationErrorDialog(
 
 @Composable
 fun MiscellaneousErrorDialog(
+    errorCode: String,
     onDismissRequest: () -> Unit
 ) {
+    val message =
+        when (errorCode) {
+            MiscellaneousError.RequiresRecentLogin.code -> stringResource(R.string.error_message_miscellaneous_session_out)
+            else -> stringResource(R.string.error_message_miscellaneous)
+        }
+
     ErrorDialog(
         title = stringResource(R.string.miscellaneous_error_dialog_title_text),
-        message = stringResource(R.string.error_message_miscellaneous),
+        message = message,
         positiveButtonText = stringResource(R.string.error_dialog_positive_button_text),
         onDismissRequest = onDismissRequest,
         onPositiveClicked = onDismissRequest

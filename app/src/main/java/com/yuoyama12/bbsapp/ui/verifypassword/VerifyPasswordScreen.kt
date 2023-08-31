@@ -62,7 +62,7 @@ fun VerifyPasswordScreen(
                 onValueChanged = { password = it },
                 placeholder = "",
                 keyboardActions = KeyboardActions(
-                    onAny = {
+                    onDone = {
                         verifyPassword(
                             password,
                             viewModel,

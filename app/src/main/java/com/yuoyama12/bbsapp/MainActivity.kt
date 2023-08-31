@@ -92,7 +92,10 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(Screen.VerifyPasswordForChangingMailAddress.route) {
                         VerifyPasswordScreen(
-                            onVerifySuccess = { navController.navigate(Screen.ChangeMailAddress.route) }
+                            onVerifySuccess = {
+                                navController.popBackStack()
+                                navController.navigate(Screen.ChangeMailAddress.route)
+                            }
                         )
                     }
                     composable(Screen.ChangeMailAddress.route) {

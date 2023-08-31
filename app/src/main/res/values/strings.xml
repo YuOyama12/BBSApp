@@ -65,7 +65,9 @@
     <string name="error_verification_message_miscellaneous_login">認証に失敗しました。しばらく時間をおいて再度お試しください。</string>
     <string name="error_email_already_in_use">アカウントが作成できませんでした。このメールアドレスは既に使用されています。別のメールアドレスでお試しください。</string>
     <string name="error_message_miscellaneous_sign_up">アカウントが作成できませんでした。しばらく時間をおいて再度お試しください。</string>
+    <string name="error_message_miscellaneous_session_out">長時間操作がなかったためセッションが切れました。最初からやり直して下さい。</string>
     <string name="error_message_miscellaneous">エラーが発生しました。しばらく時間をおいて再度お試しください。</string>
+
 
 
 
