@@ -40,11 +40,13 @@
     <string name="verify_password_screen_header">パスワードを入力してください。</string>
     <string name="verify_message_for_changing_mail_address_message">メールアドレスの変更を続けるにはパスワードを入力してください。</string>
     <string name="verify_password_screen_app_bar_title">パスワード確認</string>
+    <string name="verify_password_for_changing_password_message">パスワードの変更を続けるには現在のパスワードを入力してください。</string>
     <string name="change_mail_address_screen_header">新しいメールアドレスを入力してください。</string>
     <string name="change_mail_address_screen_mail_header">現在のメールアドレス：\n%1$s</string>
     <string name="change_mail_address_screen_caution_message">※ご利用の端末で使用可能なメールアドレスにしてください。</string>
+    <string name="change_password_screen_header">新しいパスワードを入力してください。</string>
     <string name="change_mail_address_screen_submit_button">変更</string>
-    <string name="change_mail_address_complete_message">変更が完了しました</string>
+    <string name="change_complete_message">変更が完了しました</string>
     <string name="miscellaneous_error_dialog_title_text">エラー</string>
 
 

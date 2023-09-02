@@ -67,7 +67,20 @@ class UserAccountInfoValidation(private val context: Context) {
             showMessage(R.string.error_message_email)
             false
         }
+    }
 
+    fun isInputtedPasswordValid(password: String, repeatedPassword: String): Boolean {
+        if (!isValidPassword(password)) {
+            showMessage(R.string.error_message_password)
+            return false
+        }
+
+        return if (!arePasswordsSame(password, repeatedPassword)) {
+            showMessage(R.string.error_message_repeated_password)
+            false
+        } else {
+            true
+        }
     }
 
     private fun showMessage(@StringRes message: Int) {

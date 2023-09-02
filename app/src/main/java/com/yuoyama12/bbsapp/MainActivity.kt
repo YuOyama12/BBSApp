@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
@@ -17,6 +18,7 @@ import com.yuoyama12.bbsapp.ui.login.LoginScreen
 import com.yuoyama12.bbsapp.ui.main.MainScreen
 import com.yuoyama12.bbsapp.ui.setting.SettingScreen
 import com.yuoyama12.bbsapp.ui.settingitem.changemailaddress.ChangeMailAddressScreen
+import com.yuoyama12.bbsapp.ui.settingitem.changepassword.ChangePasswordScreen
 import com.yuoyama12.bbsapp.ui.signup.SignUpScreen
 import com.yuoyama12.bbsapp.ui.theme.BBSAppTheme
 import com.yuoyama12.bbsapp.ui.verifypassword.VerifyPasswordScreen
@@ -92,6 +94,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(Screen.VerifyPasswordForChangingMailAddress.route) {
                         VerifyPasswordScreen(
+                            displayedMessage = stringResource(R.string.verify_message_for_changing_mail_address_message),
                             onVerifySuccess = {
                                 navController.popBackStack()
                                 navController.navigate(Screen.ChangeMailAddress.route)
@@ -99,7 +102,24 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable(Screen.ChangeMailAddress.route) {
-                        ChangeMailAddressScreen (
+                        ChangeMailAddressScreen(
+                            moveToMainScreen = {
+                                navController.popBackStack()
+                                navController.navigate(Screen.Main.route)
+                            }
+                        )
+                    }
+                    composable(Screen.VerifyPasswordForChangingPassword.route) {
+                        VerifyPasswordScreen(
+                            displayedMessage = stringResource(R.string.verify_password_for_changing_password_message),
+                            onVerifySuccess = {
+                                navController.popBackStack()
+                                navController.navigate(Screen.ChangeMailAddress.route)
+                            }
+                        )
+                    }
+                    composable(Screen.ChangePassword.route) {
+                        ChangePasswordScreen(
                             moveToMainScreen = {
                                 navController.popBackStack()
                                 navController.navigate(Screen.Main.route)

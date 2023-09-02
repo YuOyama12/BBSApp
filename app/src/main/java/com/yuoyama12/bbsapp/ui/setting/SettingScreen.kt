@@ -46,7 +46,7 @@ fun SettingScreen(
                 SettingsMenuLink(
                     title = { Text(text = stringResource(R.string.setting_title_about_changing_password)) },
                     enabled = viewModel.isLoginWithEmailAndPassword(),
-                    onClick = {  },
+                    onClick = { moveTo(Screen.VerifyPasswordForChangingPassword) },
                 )
                 HorizontalDivider(thickness = horizontalDividerThickness)
 

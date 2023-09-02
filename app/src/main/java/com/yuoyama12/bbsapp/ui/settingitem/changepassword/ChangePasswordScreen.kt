@@ -1,4 +1,4 @@
-package com.yuoyama12.bbsapp.ui.settingitem.changemailaddress
+package com.yuoyama12.bbsapp.ui.settingitem.changepassword
 
 import android.util.Log
 import android.widget.Toast
@@ -14,7 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -27,20 +26,24 @@ import com.yuoyama12.bbsapp.composable.*
 import com.yuoyama12.bbsapp.composable.component.OnExecutingIndicator
 import com.yuoyama12.bbsapp.data.FirebaseErrorState
 
-private const val TAG = "ChangeMailAddressScreen"
+private const val TAG = "ChangePasswordScreen"
 @Composable
-fun ChangeMailAddressScreen(moveToMainScreen: () -> Unit) {
+fun ChangePasswordScreen(
+    moveToMainScreen: () -> Unit
+) {
     val context = LocalContext.current
-    val viewModel: ChangeMailAddressViewModel = hiltViewModel()
+    val viewModel: ChangePasswordViewModel = hiltViewModel()
     val onUpdateExecuting by viewModel.onUpdateExecuting.collectAsState()
 
-    var newEmail by rememberSaveable { mutableStateOf("") }
+    var newPassword by rememberSaveable { mutableStateOf("") }
+    var repeatedNewPassword by rememberSaveable { mutableStateOf("") }
+
     val changeCompleteMessage = stringResource(R.string.change_complete_message)
     var errorState by rememberSaveable { mutableStateOf(FirebaseErrorState()) }
 
     Column {
         NormalTopAppBar(
-            text = stringResource(R.string.setting_title_about_changing_mail_address)
+            text = stringResource(R.string.setting_title_about_changing_password)
         )
 
         Column(
@@ -52,38 +55,31 @@ fun ChangeMailAddressScreen(moveToMainScreen: () -> Unit) {
         ) {
             Text(
                 modifier = Modifier.padding(top = 32.dp, bottom = 18.dp, start = 7.dp, end = 7.dp),
-                text = stringResource(R.string.change_mail_address_screen_header),
+                text = stringResource(R.string.change_password_screen_header),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )
 
-            Text(
-                modifier = Modifier
-                    .padding(bottom = 9.dp)
-                    .align(Alignment.CenterHorizontally),
-                text = stringResource(R.string.change_mail_address_screen_mail_header, viewModel.emailAddress),
-                fontSize = 16.sp
-            )
-
-            Text(
-                modifier = Modifier.padding(bottom = 12.dp, start = 16.dp, end = 16.dp),
-                text = stringResource(R.string.change_mail_address_screen_caution_message),
-                color = Color.Red,
-                fontSize = 14.sp
-
-            )
-
-            EmailField(
+            PasswordField(
                 modifier = userAccountFieldModifier,
-                value = newEmail,
-                onValueChanged = { newEmail = it },
+                value = newPassword,
+                onValueChanged = { newPassword = it },
+                placeholder = stringResource(R.string.password_placeholder)
+            )
+
+            PasswordField(
+                modifier = userAccountFieldModifier,
+                value = repeatedNewPassword,
+                onValueChanged = { repeatedNewPassword = it },
+                placeholder = stringResource(R.string.repeated_password_placeholder)
             )
 
             Button(
                 onClick = {
-                    if (UserAccountInfoValidation(context).isInputtedEmailValid(newEmail)) {
-                        viewModel.updateEmail(
-                            email = newEmail,
+                    if (UserAccountInfoValidation(context)
+                            .isInputtedPasswordValid(newPassword, repeatedNewPassword)) {
+                        viewModel.updatePassword(
+                            password = newPassword,
                             onSuccess = {
                                 Toast.makeText(
                                     context,
@@ -120,5 +116,4 @@ fun ChangeMailAddressScreen(moveToMainScreen: () -> Unit) {
             onDismissRequest = { errorState = errorState.reset() }
         )
     }
-
 }

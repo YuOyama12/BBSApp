@@ -22,6 +22,7 @@ import com.yuoyama12.bbsapp.data.FirebaseErrorState
 
 @Composable
 fun VerifyPasswordScreen(
+    displayedMessage: String,
     onVerifySuccess: () -> Unit
 ) {
     val viewModel: VerifyPasswordViewModel = hiltViewModel()
@@ -51,7 +52,7 @@ fun VerifyPasswordScreen(
 
             Text(
                 modifier = Modifier.padding(bottom = 9.dp, start = 14.dp, end = 14.dp),
-                text = stringResource(R.string.verify_message_for_changing_mail_address_message),
+                text = displayedMessage,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Thin
             )
