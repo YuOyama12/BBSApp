@@ -53,7 +53,7 @@ fun SettingScreen(
                 SettingsMenuLink(
                     title = { Text(text = stringResource(R.string.setting_title_about_deleting_the_account)) },
                     enabled = viewModel.isLoginWithEmailAndPassword(),
-                    onClick = {  },
+                    onClick = { moveTo(Screen.DeleteAccount) },
                 )
                 HorizontalDivider(thickness = horizontalDividerThickness)
 

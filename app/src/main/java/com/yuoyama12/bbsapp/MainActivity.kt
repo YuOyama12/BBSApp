@@ -19,6 +19,7 @@ import com.yuoyama12.bbsapp.ui.main.MainScreen
 import com.yuoyama12.bbsapp.ui.setting.SettingScreen
 import com.yuoyama12.bbsapp.ui.settingitem.changemailaddress.ChangeMailAddressScreen
 import com.yuoyama12.bbsapp.ui.settingitem.changepassword.ChangePasswordScreen
+import com.yuoyama12.bbsapp.ui.settingitem.deleteaccount.DeleteAccountScreen
 import com.yuoyama12.bbsapp.ui.signup.SignUpScreen
 import com.yuoyama12.bbsapp.ui.theme.BBSAppTheme
 import com.yuoyama12.bbsapp.ui.verifypassword.VerifyPasswordScreen
@@ -123,6 +124,17 @@ class MainActivity : ComponentActivity() {
                             moveToMainScreen = {
                                 navController.popBackStack()
                                 navController.navigate(Screen.Main.route)
+                            }
+                        )
+                    }
+                    composable(Screen.DeleteAccount.route) {
+                        DeleteAccountScreen(
+                            moveToLoginScreen = {
+                                navController.navigate(Screen.Login.route) {
+                                    popUpTo(Screen.Main.route) {
+                                        inclusive = true
+                                    }
+                                }
                             }
                         )
                     }

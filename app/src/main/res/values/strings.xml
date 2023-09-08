@@ -47,6 +47,15 @@
     <string name="change_password_screen_header">新しいパスワードを入力してください。</string>
     <string name="change_mail_address_screen_submit_button">変更</string>
     <string name="change_complete_message">変更が完了しました</string>
+    <string name="delete_account_screen_header">注意事項を確認の上、削除手続きを行ってください。</string>
+    <string name="delete_account_caution_header">注意事項</string>
+    <string-array name="delete_account_caution_messages">
+        <item>1. アカウント削除後は、アカウントの復旧はできません。</item>
+        <item>2. アカウントを削除しても、投稿したメッセージは残ります。</item>
+    </string-array>
+    <string name="delete_account_agreement_with_cautions_message">すべての注意事項に同意</string>
+    <string name="delete_account_screen_submit_button">削除</string>
+    <string name="delete_complete_message">削除が完了しました</string>
     <string name="miscellaneous_error_dialog_title_text">エラー</string>
 
 

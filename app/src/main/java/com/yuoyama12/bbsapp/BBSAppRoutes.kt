@@ -11,7 +11,7 @@ const val SETTING_SCREEN = "SettingScreen"
 const val VERIFY_PASSWORD_SCREEN = "VerifyPasswordScreen"
 const val CHANGE_MAIL_ADDRESS_SCREEN = "ChangeMailAddressScreen"
 const val CHANGE_PASSWORD_SCREEN = "ChangeMailAddressScreen"
-
+const val DELETE_ACCOUNT_SCREEN = "DeleteAccountScreen"
 
 const val THREAD_ID = "threadId"
 const val DEFAULT_THREAD_ID = "-1"
